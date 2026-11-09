@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Répar’Académie – Apprendre la réparation de téléphones</title>
+<meta name="description" content="Décrivez la panne ou prenez une photo : diagnostic et méthode de réparation pas à pas. Cours complets pour réparateurs de téléphones.">
+<meta name="theme-color" content="#0E3B36">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --board:#0E3B36; --board-2:#14504A; --copper:#C9822B; --copper-ink:#8A5413;
+  --paper:#F6F7F4; --card:#FFFFFF; --ink:#14201E; --muted:#56635F; --line:#D9DCD6;
+  --ok:#2F7D4F; --warn:#B4442E;
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --body:"Barlow","Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --board:#0B2E2A; --board-2:#124540; --copper:#E39B45; --copper-ink:#F2B970;
+    --paper:#101816; --card:#17221F; --ink:#E8EDEA; --muted:#9AA8A3; --line:#2A3834;
+    --ok:#5DBB82; --warn:#E57A62; color-scheme:dark;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-padding-top:72px;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.55}
+img{max-width:100%}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--copper);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 1rem}
+[hidden]{display:none!important}
+
+header.top{position:sticky;top:0;z-index:9;background:var(--board);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:.75rem}
+.logo{font-family:var(--display);font-weight:800;font-size:1.5rem;text-decoration:none;display:flex;align-items:center;gap:.45rem;white-space:nowrap}
+.logo svg{width:24px;height:24px;flex:none}
+nav.links{display:flex;gap:1.1rem;align-items:center}
+nav.links a{text-decoration:none;color:#D6E4E0;font-weight:500}
+nav.links a:hover{color:#fff}
+@media (max-width:700px){nav.links a.hide-sm{display:none}}
+@media (max-width:400px){.logo{font-size:1.25rem}.logo svg{width:20px;height:20px}.acct{padding:.35rem .7rem}}
+.acct{background:var(--copper);color:#1B1206;border:none;border-radius:999px;font:inherit;font-weight:600;padding:.4rem .9rem;cursor:pointer;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
+
+.hero{background:var(--board);color:#fff;padding:2.25rem 0 3rem;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
+  background-image:linear-gradient(90deg,transparent 49%,#C9822B 49%,#C9822B 51%,transparent 51%),linear-gradient(0deg,transparent 49%,#C9822B 49%,#C9822B 51%,transparent 51%);
+  background-size:120px 80px,80px 120px;-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 100%);mask-image:linear-gradient(90deg,transparent 40%,#000 100%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:2.5rem;align-items:start;position:relative;z-index:1}
+@media (max-width:860px){.hero-grid{grid-template-columns:1fr;gap:1.75rem}}
+.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,6vw,4.2rem);line-height:.98;margin:.25rem 0 1rem}
+.hero p.lead{color:#CFE0DB;max-width:34ch;font-size:1.15rem;margin:0 0 1.5rem}
+.hero ul.facts{list-style:none;padding:0;margin:0;display:grid;gap:.6rem;color:#CFE0DB}
+.hero ul.facts li{display:flex;gap:.6rem;align-items:baseline}
+.hero ul.facts li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--copper);flex:none}
+
+.bench{background:var(--card);color:var(--ink);border-radius:14px;padding:1.25rem;box-shadow:0 18px 40px rgba(0,0,0,.25)}
+.bench h2{font-family:var(--display);font-size:1.6rem;margin:0 0 .25rem}
+.sub{color:var(--muted);margin:0 0 1rem;font-size:.97rem}
+label.f{display:block;font-weight:600;margin:.85rem 0 .35rem;font-size:.95rem}
+select,textarea,input[type=text],input[type=email],input[type=password],input[type=tel]{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:.65rem .75rem}
+textarea{min-height:110px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+@media (max-width:480px){.row2{grid-template-columns:1fr}}
+.drop{border:2px dashed var(--line);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;color:var(--muted);background:var(--paper);position:relative}
+.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.preview{display:none;align-items:center;gap:.75rem;margin-top:.6rem}
+.preview img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
+.linkbtn{background:none;border:none;color:var(--warn);font:inherit;font-weight:600;cursor:pointer;padding:.25rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.chip{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:.25rem .7rem;font:inherit;font-size:.88rem;cursor:pointer}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:600;border:none;border-radius:8px;padding:.75rem 1.15rem;cursor:pointer;text-decoration:none;line-height:1.2}
+.btn-copper{background:var(--copper);color:#1B1206}
+.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
+.btn-full{width:100%}
+.btn-sm{padding:.45rem .7rem;font-size:.92rem}
+.btn[disabled]{opacity:.55;cursor:not-allowed}
+.actions{display:flex;gap:.75rem;align-items:center;margin-top:1rem;flex-wrap:wrap}
+.quota{font-size:.9rem;color:var(--muted)}
+.notice{margin-top:.75rem;padding:.7rem .85rem;border-radius:8px;background:color-mix(in srgb,var(--warn) 13%,transparent);color:var(--ink);font-size:.95rem}
+.okmsg{margin-top:.75rem;padding:.7rem .85rem;border-radius:8px;background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ink);font-size:.95rem}
+
+#result{padding:2.25rem 0}
+.report{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.4rem}
+.report h2{font-family:var(--display);font-size:2rem;margin:0 0 .4rem;line-height:1.05}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1.25rem}
+.tag{font-size:.88rem;font-weight:600;padding:.2rem .6rem;border-radius:6px;background:var(--paper);border:1px solid var(--line)}
+.tag.d1{color:var(--ok)} .tag.d2{color:var(--copper-ink)} .tag.d3{color:var(--warn)}
+.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-bottom:1.5rem}
+@media (max-width:760px){.cols{grid-template-columns:1fr}}
+.report h3{font-family:var(--display);font-size:1.25rem;margin:0 0 .4rem}
+.cols ul{margin:0;padding-left:1.1rem}
+ol.steps{list-style:none;padding:0;margin:0;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:2.4rem 1fr;gap:.75rem;padding:.9rem 0;border-top:1px solid var(--line)}
+ol.steps li::before{content:counter(s);font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--board-2);background:color-mix(in srgb,var(--copper) 22%,transparent);border-radius:8px;display:grid;place-items:center;height:2.4rem}
+@media (prefers-color-scheme:dark){ol.steps li::before{color:var(--copper-ink)}}
+ol.steps strong{display:block}
+.warnbox{margin-top:1.25rem;border-left:4px solid var(--warn);padding:.6rem .9rem;background:var(--paper);border-radius:0 8px 8px 0}
+.thinking{display:flex;align-items:center;gap:.75rem;color:var(--muted)}
+.spin{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--copper);border-radius:50%;animation:sp .9s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+section.block{padding:3.5rem 0}
+h2.title{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.5vw,3rem);margin:0 0 .5rem;line-height:1}
+p.intro{color:var(--muted);max-width:60ch;margin:0 0 2rem}
+.courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;align-items:start}
+.course{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.course > button{all:unset;display:block;width:100%;box-sizing:border-box;padding:1.1rem 1.2rem;cursor:pointer}
+.course > button:focus-visible,.lesson > button:focus-visible{outline:3px solid var(--copper);outline-offset:-3px}
+.course h3{font-family:var(--display);font-size:1.45rem;margin:0 0 .2rem}
+.course .cmeta{color:var(--muted);font-size:.92rem}
+.course .lv{float:right;font-size:.82rem;font-weight:600;color:var(--copper-ink)}
+.lessons{display:none;border-top:1px solid var(--line)}
+.course.open .lessons{display:block}
+.lesson{border-bottom:1px solid var(--line)}
+.lesson:last-child{border-bottom:none}
+.lesson > button{all:unset;display:flex;justify-content:space-between;gap:.5rem;width:100%;box-sizing:border-box;padding:.75rem 1.2rem;cursor:pointer;font-weight:500}
+.lesson .lock{font-size:.82rem;color:var(--muted);white-space:nowrap}
+.lesson .body{display:none;padding:0 1.2rem 1rem}
+.lesson.open .body{display:block}
+.lesson .body ul,.lesson .body ol{padding-left:1.2rem;margin:.4rem 0}
+
+.alt{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+@media (max-width:860px){.plans{grid-template-columns:1fr}}
+.plan{border:1.5px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;background:var(--paper)}
+.plan.best{border-color:var(--copper);background:var(--card);box-shadow:0 0 0 3px color-mix(in srgb,var(--copper) 25%,transparent)}
+.plan h3{font-family:var(--display);font-size:1.6rem;margin:0}
+.price{font-family:var(--display);font-weight:800;font-size:2.4rem;margin:.4rem 0 0;line-height:1}
+.price small{font-family:var(--body);font-weight:500;font-size:.95rem;color:var(--muted)}
+.plan ul{padding-left:1.1rem;margin:1rem 0 1.4rem;flex:1}
+.plan .badge{font-size:.85rem;font-weight:600;color:var(--copper-ink);margin-bottom:.3rem}
+.status{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding:.85rem 1rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:1.5rem}
+
+footer{background:var(--board);color:#CFE0DB;padding:2rem 0;font-size:.95rem}
+footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+
+dialog{border:none;border-radius:14px;padding:0;max-width:460px;width:calc(100% - 2rem);background:var(--card);color:var(--ink);max-height:calc(100dvh - 2rem)}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog .in{padding:1.4rem}
+dialog h3{font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem;line-height:1.05}
+.dhead{display:flex;justify-content:space-between;align-items:start;gap:1rem}
+.xbtn{background:none;border:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted);padding:.1rem .3rem}
+.tabs{display:flex;gap:.25rem;border-bottom:1.5px solid var(--line);margin:.5rem 0 1rem}
+.tabs button{all:unset;cursor:pointer;padding:.55rem .75rem;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1.5px}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--copper)}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;background:#fff;color:#1f1f1f;border:1.5px solid #dadce0;border-radius:8px;padding:.75rem;font:inherit;font-weight:600;cursor:pointer}
+.gbtn svg{width:20px;height:20px}
+.small{font-size:.9rem;color:var(--muted)}
+.num{font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--copper-ink)}
+.pay-list{display:grid;gap:.5rem;margin:.5rem 0 0;padding:0;list-style:none}
+.pay-list li{border:1px solid var(--line);border-radius:8px;padding:.55rem .75rem;font-size:.95rem}
+
+/* Admin */
+#admin{padding:2.5rem 0 4rem}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem;margin-bottom:1.25rem}
+.panel h3{font-family:var(--display);font-size:1.5rem;margin:0 0 .75rem}
+.rowitem{border-top:1px solid var(--line);padding:.8rem 0;display:grid;gap:.5rem}
+.rowitem:first-of-type{border-top:none}
+.rowitem .who{font-weight:600}
+.rowitem .btns{display:flex;flex-wrap:wrap;gap:.4rem}
+.searchrow{display:flex;gap:.5rem;margin-bottom:.75rem}
+.searchrow input{flex:1}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#diagnostic">
+      <svg viewBox="0 0 24 24" fill="none" stroke="#C9822B" stroke-width="2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/><path d="M9 8l3 3 3-3"/></svg>
+      Répar’Académie
+    </a>
+    <nav class="links" aria-label="Navigation principale">
+      <a href="#diagnostic" class="hide-sm">Diagnostic</a>
+      <a href="#cours" class="hide-sm">Cours</a>
+      <a href="#abonnements" class="hide-sm">Abonnements</a>
+      <button class="acct" id="acctBtn" type="button">Se connecter</button>
+    </nav>
+  </div>
+</header>
+
+<main id="site">
+<section class="hero" id="diagnostic">
+  <div class="wrap hero-grid">
+    <div>
+      <h1>Décrivez la panne. On vous montre comment la réparer.</h1>
+      <p class="lead">Écrivez le problème ou prenez une photo du défaut : vous recevez le diagnostic et la méthode de réparation pas à pas.</p>
+      <ul class="facts">
+        <li>Écran, batterie, charge, son, réseau, carte mère, logiciel</li>
+        <li>Android et iPhone, toutes marques</li>
+        <li>Outils, pièces et précautions indiqués à chaque fois</li>
+        <li>Cours complets pour devenir réparateur</li>
+      </ul>
+    </div>
+
+    <div class="bench">
+      <h2>Analyser une panne</h2>
+      <p class="sub">Plus vous donnez de détails, plus la méthode est précise.</p>
+      <div class="row2">
+        <div>
+          <label class="f" for="brand">Marque</label>
+          <select id="brand">
+            <option>Samsung</option><option>iPhone</option><option>Tecno</option><option>Infinix</option>
+            <option>Itel</option><option>Xiaomi / Redmi</option><option>Huawei</option><option>Oppo</option>
+            <option>Vivo</option><option>Nokia</option><option>Autre</option>
+          </select>
+        </div>
+        <div>
+          <label class="f" for="model">Modèle (facultatif)</label>
+          <input type="text" id="model" placeholder="Ex. Galaxy A12, Spark 10">
+        </div>
+      </div>
+      <label class="f" for="desc">Description de la panne</label>
+      <textarea id="desc" placeholder="Ex. Le téléphone ne charge plus. Quand je branche le câble, rien ne s’affiche. Il est tombé dans l’eau la semaine dernière."></textarea>
+      <div class="chips" aria-label="Exemples de pannes">
+        <button class="chip" type="button">Ne charge plus</button>
+        <button class="chip" type="button">Écran noir mais il vibre</button>
+        <button class="chip" type="button">Bloqué sur le logo</button>
+        <button class="chip" type="button">Pas de son en appel</button>
+        <button class="chip" type="button">Batterie gonflée</button>
+      </div>
+      <label class="f">Photo du défaut (facultatif)</label>
+      <div class="drop">
+        <span id="dropText">Touchez pour prendre ou choisir une photo</span>
+        <input type="file" id="photo" accept="image/*" aria-label="Ajouter une photo du défaut">
+      </div>
+      <div class="preview" id="preview">
+        <img id="previewImg" alt="Photo du défaut">
+        <button type="button" class="linkbtn" id="removePhoto">Retirer la photo</button>
+      </div>
+      <div class="actions">
+        <button class="btn btn-copper" id="analyze" type="button">Analyser la panne</button>
+        <span class="quota" id="quota">Connectez-vous pour lancer un diagnostic</span>
+      </div>
+      <div class="notice" id="notice" role="alert" hidden></div>
+    </div>
+  </div>
+</section>
+
+<section id="result" aria-live="polite" hidden>
+  <div class="wrap"><div class="report" id="report"></div></div>
+</section>
+
+<section class="block" id="cours">
+  <div class="wrap">
+    <h2 class="title">Les cours</h2>
+    <p class="intro">La première leçon de chaque cours est gratuite. Les autres sont réservées aux abonnés Pro et Atelier.</p>
+    <div class="courses" id="courseList"></div>
+  </div>
+</section>
+
+<section class="block alt" id="abonnements">
+  <div class="wrap">
+    <h2 class="title">Abonnements</h2>
+    <p class="intro">Payez par Orange Money, Moov Money ou Wave. Votre compte est activé dès que le paiement est vérifié, et l’accès s’arrête automatiquement à la fin de la période.</p>
+    <div class="status" id="planStatus" hidden></div>
+    <div class="plans" id="plans"></div>
+  </div>
+</section>
+</main>
+
+<section id="admin" hidden>
+  <div class="wrap">
+    <h2 class="title">Administration</h2>
+    <p class="intro">Validez les paiements, activez les abonnements et gérez les leçons payantes.</p>
+
+    <div class="panel">
+      <h3>Paiements en attente</h3>
+      <div id="admPay"><p class="small">Chargement…</p></div>
+      <button class="btn btn-ghost btn-sm" id="admPayRefresh" type="button">Actualiser</button>
+    </div>
+
+    <div class="panel">
+      <h3>Clients</h3>
+      <div class="searchrow">
+        <input type="text" id="admSearch" placeholder="Email ou téléphone (+223…)" aria-label="Rechercher un client">
+        <button class="btn btn-copper btn-sm" id="admSearchBtn" type="button">Chercher</button>
+      </div>
+      <div id="admUsers"><p class="small">Chargement…</p></div>
+    </div>
+
+    <div class="panel">
+      <h3>Leçons payantes</h3>
+      <label class="f" for="admLesson">Leçon</label>
+      <select id="admLesson"></select>
+      <label class="f" for="admContent">Contenu (texte ou HTML)</label>
+      <textarea id="admContent" style="min-height:220px"></textarea>
+      <div class="actions">
+        <button class="btn btn-copper" id="admSaveLesson" type="button">Enregistrer la leçon</button>
+        <span class="small" id="admLessonMsg"></span>
+      </div>
+      <label class="f" for="admImport" style="margin-top:1.5rem">Importer plusieurs leçons (JSON)</label>
+      <textarea id="admImport" placeholder='{"bases-2":"<p>…</p>", "ecrans-2":"<p>…</p>"}'></textarea>
+      <div class="actions">
+        <button class="btn btn-ghost" id="admImportBtn" type="button">Importer</button>
+        <span class="small" id="admImportMsg"></span>
+      </div>
+    </div>
+
+    <a class="btn btn-ghost" href="#diagnostic">Retour au site</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year"></span> Répar’Académie</span>
+    <span id="contactLine"></span>
+  </div>
+</footer>
+
+<!-- Connexion -->
+<dialog id="loginDlg" aria-labelledby="loginTitle">
+  <div class="in">
+    <div class="dhead"><h3 id="loginTitle">Se connecter</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
+    <p class="small" style="margin-top:0">Un seul compte par personne. Votre abonnement est lié à ce compte.</p>
+    <button class="gbtn" id="googleBtn" type="button">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+      Continuer avec Google
+    </button>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" aria-selected="true" data-tab="email">Email</button>
+      <button type="button" role="tab" aria-selected="false" data-tab="tel">Téléphone</button>
+    </div>
+
+    <div data-pane="email">
+      <div id="nameRow" hidden>
+        <label class="f" for="regName">Nom complet</label>
+        <input type="text" id="regName" autocomplete="name">
+      </div>
+      <label class="f" for="email">Adresse email</label>
+      <input type="email" id="email" autocomplete="email">
+      <label class="f" for="pass">Mot de passe</label>
+      <input type="password" id="pass" autocomplete="current-password" placeholder="6 caractères minimum">
+      <div class="actions">
+        <button class="btn btn-copper btn-full" id="emailBtn" type="button">Se connecter</button>
+      </div>
+      <p class="small" style="margin:.75rem 0 0">
+        <button type="button" class="linkbtn" style="color:var(--copper-ink)" id="toggleMode">Pas encore de compte ? Créer un compte</button><br>
+        <button type="button" class="linkbtn" style="color:var(--muted)" id="forgotBtn">Mot de passe oublié</button>
+      </p>
+    </div>
+
+    <div data-pane="tel" hidden>
+      <div id="telStep1">
+        <label class="f" for="tel">Numéro de téléphone</label>
+        <input type="tel" id="tel" value="+223 " autocomplete="tel">
+        <div class="actions"><button class="btn btn-copper btn-full" id="sendCode" type="button">Recevoir le code par SMS</button></div>
+      </div>
+      <div id="telStep2" hidden>
+        <label class="f" for="code">Code reçu par SMS</label>
+        <input type="text" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
+        <div class="actions"><button class="btn btn-copper btn-full" id="checkCode" type="button">Valider le code</button></div>
+        <button type="button" class="linkbtn" style="color:var(--muted)" id="telBack">Changer de numéro</button>
+      </div>
+      <div id="recaptcha"></div>
+    </div>
+    <div class="notice" id="loginMsg" role="alert" hidden></div>
+  </div>
+</dialog>
+
+<!-- Compte -->
+<dialog id="acctDlg" aria-labelledby="acctTitle">
+  <div class="in">
+    <div class="dhead"><h3 id="acctTitle">Mon compte</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
+    <p id="acctWho" style="margin:.25rem 0"></p>
+    <p id="acctPlan" style="margin:.25rem 0 1rem;font-weight:600"></p>
+    <div id="acctPays"></div>
+    <div class="actions">
+      <a class="btn btn-copper" href="#admin" id="adminLink" hidden>Administration</a>
+      <a class="btn btn-ghost" href="#abonnements" id="renewLink">Abonnements</a>
+      <button class="btn btn-ghost" id="logoutBtn" type="button">Se déconnecter</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Paiement -->
+<dialog id="payDlg" aria-labelledby="payTitle">
+  <div class="in">
+    <div class="dhead"><h3 id="payTitle">Abonnement</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
+    <p id="payPrice" style="margin:.25rem 0 .75rem;font-weight:600"></p>
+    <ol style="padding-left:1.2rem;margin:0">
+      <li>Envoyez le montant par Orange Money, Moov Money ou Wave au numéro :<br><span class="num" id="payNum"></span></li>
+      <li>Remplissez le formulaire ci-dessous et envoyez.</li>
+      <li>Votre compte est activé dès que le paiement est vérifié.</li>
+    </ol>
+    <label class="f" for="payOp">Moyen de paiement</label>
+    <select id="payOp"><option>Orange Money</option><option>Wave</option><option>Moov Money</option></select>
+    <label class="f" for="payFrom">Numéro qui a payé</label>
+    <input type="tel" id="payFrom" value="+223 ">
+    <label class="f" for="payRef">Référence de la transaction (dans le SMS de confirmation)</label>
+    <input type="text" id="payRef" placeholder="Ex. PP251109.1234.A12345">
+    <div class="actions">
+      <button class="btn btn-copper" id="paySend" type="button">J’ai payé, envoyer</button>
+      <a class="btn btn-ghost" id="payWa" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+    <div class="notice" id="payMsg" role="alert" hidden></div>
+  </div>
+</dialog>
+
+<script type="module">
+/* ==========================================================
+   CONFIGURATION – modifiez ici si besoin
+   ========================================================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyAp9GLDgvSOXdniGSBPSgw465Wt_n5Xd3A",
+  authDomain: "mozuiko-mm.firebaseapp.com",
+  projectId: "mozuiko-mm",
+  storageBucket: "mozuiko-mm.firebasestorage.app",
+  messagingSenderId: "322990021220",
+  appId: "1:322990021220:web:e953f1e326c87749d6dd71"
+};
+const CONFIG = {
+  nomSite: "Répar’Académie",
+  adminEmail: "pofficielvideo@gmail.com",
+  telephonePaiement: "+223 77 37 02 54",
+  whatsapp: "22377370254",
+  diagnosticsGratuitsParJour: 3,
+  modeleIA: "gemini-3.8-flash",
+  plans: [
+    { id:"gratuit", nom:"Gratuit", prix:"0", periode:"FCFA", jours:0, badge:"",
+      avantages:["3 diagnostics par jour","Première leçon de chaque cours","Photos acceptées"], bouton:"Commencer" },
+    { id:"pro", nom:"Pro", prix:"5 000", periode:"FCFA / mois", jours:30, badge:"Le plus choisi",
+      avantages:["Diagnostics illimités","Tous les cours et leçons","Nouvelles leçons chaque mois","Aide par WhatsApp"], bouton:"Choisir Pro" },
+    { id:"atelier", nom:"Atelier", prix:"45 000", periode:"FCFA / an", jours:365, badge:"",
+      avantages:["Tout le plan Pro pendant 12 mois","Attestation de formation","Schémas de cartes mères","Aide prioritaire"], bouton:"Choisir Atelier" }
+  ]
+};
+
+/* ==========================================================
+   CATALOGUE DES COURS
+   - Les leçons avec "gratuit" sont visibles par tous.
+   - Les autres sont chargées depuis la base, réservées aux abonnés.
+   ========================================================== */
+const CATALOGUE = [
+  { id:"bases", titre:"Bases de la réparation", niveau:"Débutant", lecons:[
+    { id:"bases-1", t:"Outils indispensables et poste de travail", gratuit:`<p>Le minimum pour commencer :</p><ul><li>Tournevis de précision (cruciforme 000, pentalobe P2, tri-wing Y0.6, Torx T2-T5)</li><li>Spatules plastique, médiators, ventouse</li><li>Pince brucelles antistatique</li><li>Station à air chaud et fer à souder réglable</li><li>Multimètre, alimentation stabilisée</li><li>Alcool isopropylique 99 %, brosse douce, tapis antistatique</li></ul><p>Travaillez sur une surface propre et bien éclairée, et rangez les vis dans l’ordre de démontage : une vis trop longue remise au mauvais endroit peut percer la carte mère.</p>` },
+    { id:"bases-2", t:"Sécurité : batterie, électricité statique, chaleur" },
+    { id:"bases-3", t:"Ouvrir un téléphone sans le casser" },
+    { id:"bases-4", t:"Lire un diagnostic avec le multimètre" }
+  ]},
+  { id:"ecrans", titre:"Écrans et vitres", niveau:"Débutant", lecons:[
+    { id:"ecrans-1", t:"Reconnaître LCD, OLED et vitre seule", gratuit:`<p><strong>Vitre cassée mais image normale et tactile qui répond :</strong> seule la vitre est touchée.</p><p><strong>Taches noires, lignes de couleur, écran noir alors que le téléphone vibre et sonne :</strong> la dalle est abîmée, il faut changer le bloc complet.</p><p><strong>Tactile qui ne répond plus mais image parfaite :</strong> vérifiez d’abord la nappe et le connecteur, puis le bloc.</p>` },
+    { id:"ecrans-2", t:"Remplacer un bloc écran" },
+    { id:"ecrans-3", t:"Séparer et recoller une vitre" }
+  ]},
+  { id:"batterie", titre:"Batterie et charge", niveau:"Débutant", lecons:[
+    { id:"batterie-1", t:"Le téléphone ne charge plus : par où commencer", gratuit:`<ol><li>Testez avec un autre câble et un autre chargeur qui marchent.</li><li>Nettoyez le connecteur avec une aiguille en plastique : il est souvent plein de poussière.</li><li>Mesurez le courant avec un testeur USB : 0 A signifie que rien ne passe.</li><li>Si rien ne passe, vérifiez le connecteur de charge, puis le circuit de charge sur la carte.</li></ol>` },
+    { id:"batterie-2", t:"Changer une batterie en toute sécurité" },
+    { id:"batterie-3", t:"Remplacer un connecteur de charge soudé" }
+  ]},
+  { id:"son", titre:"Son, micro et vibreur", niveau:"Intermédiaire", lecons:[
+    { id:"son-1", t:"Pas de son en appel : écouteur ou carte", gratuit:`<p>Testez le haut-parleur en mode mains libres, puis l’écouteur en appel normal. Si l’un fonctionne et pas l’autre, c’est la pièce. Si aucun ne marche, suspectez le circuit audio. Pensez aussi à vérifier qu’un casque Bluetooth n’est pas connecté.</p>` },
+    { id:"son-2", t:"Micro qui ne capte plus" }
+  ]},
+  { id:"logiciel", titre:"Logiciel et réinstallation", niveau:"Intermédiaire", lecons:[
+    { id:"logiciel-1", t:"Téléphone bloqué sur le logo", gratuit:`<p>Commencez par le mode récupération : effacez la partition cache (les données restent). Si le téléphone reste bloqué, il faudra réinstaller le système officiel, ce qui est expliqué dans la leçon suivante. Sauvegardez toujours les données avant si c’est possible.</p>` },
+    { id:"logiciel-2", t:"Réinstaller le système officiel" }
+  ]},
+  { id:"carte", titre:"Micro-soudure et carte mère", niveau:"Avancé", lecons:[
+    { id:"carte-1", t:"Lire un schéma de carte mère", gratuit:`<p>Un schéma montre les lignes d’alimentation (VBAT, VPH_PWR, VBUS), les condensateurs de filtrage et les points de test. Repérer ces lignes permet de trouver rapidement un court-circuit ou une alimentation manquante.</p>` },
+    { id:"carte-2", t:"Trouver un court-circuit" },
+    { id:"carte-3", t:"Rebillage d’un circuit intégré" }
+  ]},
+  { id:"eau", titre:"Téléphone tombé dans l’eau", niveau:"Intermédiaire", lecons:[
+    { id:"eau-1", t:"Les bons gestes dans la première heure", gratuit:`<p>Ne pas allumer, ne pas charger, ne pas mettre dans le riz. Ouvrir le téléphone, déconnecter la batterie, puis nettoyer à l’alcool isopropylique et laisser sécher. Plus vous agissez vite, plus vous sauvez la carte.</p>` },
+    { id:"eau-2", t:"Nettoyer l’oxydation sur la carte" }
+  ]},
+  { id:"atelier", titre:"Gérer son atelier", niveau:"Tous niveaux", lecons:[
+    { id:"atelier-1", t:"Fixer ses prix", gratuit:`<p>Prix = coût de la pièce + temps de travail + marge de risque. Affichez des prix clairs et donnez une garantie écrite : un client satisfait revient et en ramène d’autres.</p>` },
+    { id:"atelier-2", t:"Trouver de bons fournisseurs de pièces" }
+  ]}
+];
+
+/* ==========================================================
+   FIREBASE
+   ========================================================== */
+const V = "13.1.0";
+const FB = `https://www.gstatic.com/firebasejs/${V}`;
+const { initializeApp } = await import(`${FB}/firebase-app.js`);
+const A = await import(`${FB}/firebase-auth.js`);
+const F = await import(`${FB}/firebase-firestore.js`);
+
+const app = initializeApp(firebaseConfig);
+const auth = A.getAuth(app);
+auth.languageCode = "fr";
+const db = F.getFirestore(app);
+
+let aiModel = null;
+async function getModel(){
+  if (aiModel) return aiModel;
+  const AI = await import(`${FB}/firebase-ai.js`);
+  const ai = AI.getAI(app, { backend: new AI.GoogleAIBackend() });
+  aiModel = AI.getGenerativeModel(ai, { model: CONFIG.modeleIA, generationConfig: { responseMimeType: "application/json" } });
+  return aiModel;
+}
+
+/* ==========================================================
+   OUTILS
+   ========================================================== */
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today = () => new Date().toISOString().slice(0,10);
+const fmtDate = d => d ? d.toLocaleDateString("fr-FR", { day:"numeric", month:"long", year:"numeric" }) : "";
+const show = (el, msg) => { el.textContent = msg || ""; el.hidden = !msg; };
+const cleanTel = v => v.replace(/[^\d+]/g, "");
+
+$("#year").textContent = new Date().getFullYear();
+$("#contactLine").textContent = "WhatsApp : " + CONFIG.telephonePaiement;
+
+document.querySelectorAll("dialog [data-close]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
+function openDlg(id){ const d = $(id); if (!d.open) d.showModal(); }
+
+const AUTH_ERR = {
+  "auth/invalid-email": "Adresse email invalide.",
+  "auth/invalid-credential": "Email ou mot de passe incorrect.",
+  "auth/wrong-password": "Mot de passe incorrect.",
+  "auth/user-not-found": "Aucun compte avec cet email. Créez un compte.",
+  "auth/email-already-in-use": "Cet email a déjà un compte. Connectez-vous.",
+  "auth/weak-password": "Le mot de passe doit avoir au moins 6 caractères.",
+  "auth/too-many-requests": "Trop d’essais. Attendez quelques minutes puis réessayez.",
+  "auth/invalid-phone-number": "Numéro invalide. Écrivez-le avec l’indicatif, par exemple +223 70 00 00 00.",
+  "auth/invalid-verification-code": "Code incorrect. Vérifiez le SMS.",
+  "auth/code-expired": "Le code a expiré. Demandez un nouveau code.",
+  "auth/quota-exceeded": "Trop de SMS envoyés aujourd’hui. Connectez-vous avec Google ou l’email.",
+  "auth/popup-closed-by-user": "Connexion Google annulée.",
+  "auth/unauthorized-domain": "Ce site n’est pas encore autorisé dans Firebase (Authentication > Paramètres > Domaines autorisés).",
+  "auth/network-request-failed": "Pas de connexion internet. Vérifiez votre réseau.",
+  "auth/operation-not-allowed": "Ce mode de connexion n’est pas activé dans Firebase."
+};
+const authMsg = e => AUTH_ERR[e?.code] || ("Connexion impossible (" + (e?.code || e?.message || "erreur") + ").");
+
+/* ==========================================================
+   ÉTAT DU COMPTE
+   ========================================================== */
+let user = null;      // utilisateur Firebase
+let profil = null;    // document users/{uid}
+const isAdmin = () => !!user && user.email === CONFIG.adminEmail && user.emailVerified;
+const finAbo = () => profil?.finAbonnement?.toDate?.() || null;
+const isActive = () => isAdmin() || (finAbo() && finAbo() > new Date());
+
+async function chargerProfil(){
+  if (!user) { profil = null; return; }
+  const ref = F.doc(db, "users", user.uid);
+  try{
+    const snap = await F.getDoc(ref);
+    if (!snap.exists()){
+      const data = { nom: user.displayName || "", email: user.email || "", telephone: user.phoneNumber || "", creeLe: F.serverTimestamp() };
+      await F.setDoc(ref, data);
+      profil = { ...data };
+    } else {
+      profil = snap.data();
+      const maj = {};
+      if (user.email && profil.email !== user.email) maj.email = user.email;
+      if (user.phoneNumber && profil.telephone !== user.phoneNumber) maj.telephone = user.phoneNumber;
+      if (user.displayName && !profil.nom) maj.nom = user.displayName;
+      if (Object.keys(maj).length) { await F.updateDoc(ref, maj); Object.assign(profil, maj); }
+    }
+  }catch(e){ console.error(e); profil = profil || {}; }
+}
+
+function nomAffiche(){
+  return profil?.nom || user?.displayName || user?.email || user?.phoneNumber || "Mon compte";
+}
+
+function majInterface(){
+  const btn = $("#acctBtn");
+  btn.textContent = user ? nomAffiche().split(" ")[0].split("@")[0] : "Se connecter";
+  renderQuota();
+  renderCourses();
+  renderStatus();
+}
+
+A.onAuthStateChanged(auth, async u => {
+  user = u;
+  await chargerProfil();
+  majInterface();
+  if (u && $("#loginDlg").open) $("#loginDlg").close();
+  route();
+});
+A.getRedirectResult(auth).catch(e => console.warn(e));
+
+/* ==========================================================
+   CONNEXION
+   ========================================================== */
+$("#acctBtn").addEventListener("click", () => {
+  if (!user) { openDlg("#loginDlg"); return; }
+  $("#acctWho").textContent = [profil?.nom, user.email, user.phoneNumber].filter(Boolean).join(" · ");
+  const fin = finAbo();
+  $("#acctPlan").textContent = isAdmin() ? "Administrateur : accès complet"
+    : (fin && fin > new Date()) ? `Abonnement ${planNom(profil.plan)} actif jusqu’au ${fmtDate(fin)}`
+    : (fin ? `Abonnement terminé le ${fmtDate(fin)}` : "Formule gratuite");
+  $("#adminLink").hidden = !isAdmin();
+  chargerMesPaiements();
+  openDlg("#acctDlg");
+});
+$("#adminLink").addEventListener("click", () => $("#acctDlg").close());
+$("#renewLink").addEventListener("click", () => $("#acctDlg").close());
+$("#logoutBtn").addEventListener("click", async () => { await A.signOut(auth); $("#acctDlg").close(); location.hash = "diagnostic"; });
+
+document.querySelectorAll(".tabs [data-tab]").forEach(t => t.addEventListener("click", () => {
+  document.querySelectorAll(".tabs [data-tab]").forEach(x => x.setAttribute("aria-selected", x === t));
+  document.querySelectorAll("[data-pane]").forEach(p => p.hidden = p.dataset.pane !== t.dataset.tab);
+  show($("#loginMsg"), "");
+}));
+
+$("#googleBtn").addEventListener("click", async () => {
+  show($("#loginMsg"), "");
+  const provider = new A.GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  try { await A.signInWithPopup(auth, provider); }
+  catch(e){
+    if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
+      try { await A.signInWithRedirect(auth, provider); } catch(e2){ show($("#loginMsg"), authMsg(e2)); }
+    } else show($("#loginMsg"), authMsg(e));
+  }
+});
+
+let modeCreation = false;
+$("#toggleMode").addEventListener("click", () => {
+  modeCreation = !modeCreation;
+  $("#nameRow").hidden = !modeCreation;
+  $("#emailBtn").textContent = modeCreation ? "Créer mon compte" : "Se connecter";
+  $("#toggleMode").textContent = modeCreation ? "J’ai déjà un compte : me connecter" : "Pas encore de compte ? Créer un compte";
+  $("#pass").autocomplete = modeCreation ? "new-password" : "current-password";
+  show($("#loginMsg"), "");
+});
+$("#emailBtn").addEventListener("click", async () => {
+  const email = $("#email").value.trim(), pass = $("#pass").value;
+  if (!email || !pass) { show($("#loginMsg"), "Écrivez votre email et votre mot de passe."); return; }
+  const b = $("#emailBtn"); b.disabled = true;
+  try{
+    if (modeCreation){
+      const nom = $("#regName").value.trim();
+      if (!nom) { show($("#loginMsg"), "Écrivez votre nom complet."); b.disabled = false; return; }
+      const cred = await A.createUserWithEmailAndPassword(auth, email, pass);
+      await A.updateProfile(cred.user, { displayName: nom });
+      user = cred.user; await chargerProfil();
+      if (profil && !profil.nom) { await F.updateDoc(F.doc(db,"users",user.uid), { nom }); profil.nom = nom; }
+      majInterface();
+    } else {
+      await A.signInWithEmailAndPassword(auth, email, pass);
+    }
+  }catch(e){ show($("#loginMsg"), authMsg(e)); }
+  b.disabled = false;
+});
+$("#forgotBtn").addEventListener("click", async () => {
+  const email = $("#email").value.trim();
+  if (!email) { show($("#loginMsg"), "Écrivez d’abord votre email, puis touchez « Mot de passe oublié »."); return; }
+  try { await A.sendPasswordResetEmail(auth, email); show($("#loginMsg"), "Un email pour changer votre mot de passe vient d’être envoyé. Regardez aussi dans les spams."); }
+  catch(e){ show($("#loginMsg"), authMsg(e)); }
+});
+
+let recaptcha = null, confirmation = null;
+$("#sendCode").addEventListener("click", async () => {
+  const tel = cleanTel($("#tel").value);
+  if (!/^\+\d{8,15}$/.test(tel)) { show($("#loginMsg"), AUTH_ERR["auth/invalid-phone-number"]); return; }
+  const b = $("#sendCode"); b.disabled = true; show($("#loginMsg"), "");
+  try{
+    if (!recaptcha) recaptcha = new A.RecaptchaVerifier(auth, "recaptcha", { size: "invisible" });
+    confirmation = await A.signInWithPhoneNumber(auth, tel, recaptcha);
+    $("#telStep1").hidden = true; $("#telStep2").hidden = false; $("#code").focus();
+  }catch(e){
+    show($("#loginMsg"), authMsg(e));
+    try { recaptcha?.clear(); } catch(_){}
+    recaptcha = null; $("#recaptcha").innerHTML = "";
+  }
+  b.disabled = false;
+});
+$("#checkCode").addEventListener("click", async () => {
+  const code = $("#code").value.trim();
+  if (!confirmation || code.length < 6) { show($("#loginMsg"), "Écrivez les 6 chiffres reçus par SMS."); return; }
+  const b = $("#checkCode"); b.disabled = true;
+  try { await confirmation.confirm(code); $("#telStep1").hidden = false; $("#telStep2").hidden = true; $("#code").value = ""; }
+  catch(e){ show($("#loginMsg"), authMsg(e)); }
+  b.disabled = false;
+});
+$("#telBack").addEventListener("click", () => { $("#telStep1").hidden = false; $("#telStep2").hidden = true; show($("#loginMsg"), ""); });
+
+/* ==========================================================
+   DIAGNOSTIC
+   ========================================================== */
+function usedToday(){ return profil?.diagJour === today() ? (profil.diagNb || 0) : 0; }
+function renderQuota(){
+  const q = $("#quota");
+  if (!user) { q.textContent = "Connectez-vous pour lancer un diagnostic"; return; }
+  if (isActive()) { q.textContent = "Abonné : diagnostics illimités"; return; }
+  const left = Math.max(0, CONFIG.diagnosticsGratuitsParJour - usedToday());
+  q.textContent = `${left} diagnostic${left>1?"s":""} gratuit${left>1?"s":""} restant${left>1?"s":""} aujourd’hui`;
+}
+async function compterDiag(){
+  if (isActive()) return;
+  const n = usedToday() + 1;
+  profil.diagJour = today(); profil.diagNb = n;
+  try { await F.updateDoc(F.doc(db,"users",user.uid), { diagJour: today(), diagNb: n }); } catch(e){ console.warn(e); }
+}
+
+document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+  const d = $("#desc"); d.value = d.value ? d.value.trim() + " " + b.textContent + "." : b.textContent + "."; d.focus();
+}));
+
+let photo = null; // { data: base64, mime }
+$("#photo").addEventListener("change", async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try{
+    const img = await createImageBitmap(f);
+    const r = Math.min(1, 1280 / Math.max(img.width, img.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    const url = c.toDataURL("image/jpeg", 0.85);
+    photo = { data: url.split(",")[1], mime: "image/jpeg" };
+    $("#previewImg").src = url;
+  }catch(err){
+    const url = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(f); });
+    photo = { data: url.split(",")[1], mime: f.type || "image/jpeg" };
+    $("#previewImg").src = url;
+  }
+  $("#preview").style.display = "flex";
+  $("#dropText").textContent = "Changer la photo";
+});
+$("#removePhoto").addEventListener("click", () => {
+  photo = null; $("#photo").value = ""; $("#preview").style.display = "none";
+  $("#dropText").textContent = "Touchez pour prendre ou choisir une photo";
+});
+
+$("#analyze").addEventListener("click", async () => {
+  const notice = $("#notice"); show(notice, "");
+  if (!user) { openDlg("#loginDlg"); return; }
+  const desc = $("#desc").value.trim();
+  if (!desc && !photo) { show(notice, "Décrivez la panne ou ajoutez une photo pour lancer l’analyse."); return; }
+  if (!isActive() && usedToday() >= CONFIG.diagnosticsGratuitsParJour) {
+    show(notice, "Vos diagnostics gratuits du jour sont utilisés. Passez à l’abonnement Pro pour des diagnostics illimités.");
+    setTimeout(() => location.hash = "abonnements", 1200); return;
+  }
+  const btn = $("#analyze"); btn.disabled = true;
+  $("#result").hidden = false;
+  $("#report").innerHTML = '<div class="thinking"><div class="spin"></div><span>Analyse de la panne en cours… cela peut prendre jusqu’à une minute.</span></div>';
+  $("#result").scrollIntoView({ block:"start" });
+
+  const prompt = `Tu es un réparateur de téléphones mobiles expert qui forme des techniciens en Afrique de l’Ouest (Mali). Réponds en français simple et précis.
+Téléphone : ${$("#brand").value} ${$("#model").value}
+Description du client : ${desc || "(aucune, voir la photo)"}
+${photo ? "Une photo du défaut est jointe : analyse-la attentivement et dis ce que tu y vois." : ""}
+
+Réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, avec exactement ces clés :
+{"panne":"titre court du diagnostic","resume":"2 phrases qui expliquent le problème","causes":["cause la plus probable","..."],"difficulte":"Facile ou Moyen ou Difficile","duree":"ex. 30 à 45 min","outils":["..."],"pieces":["..."],"cout":"estimation en FCFA de la pièce et de la main-d’œuvre au Mali","etapes":[{"titre":"...","detail":"explication précise"}],"precautions":["..."],"si_echec":"que faire si la réparation ne règle pas le problème"}
+Donne 5 à 10 étapes concrètes et dans l’ordre. Si l’information manque, commence par les vérifications qui permettent de trouver la cause.`;
+
+  try{
+    const model = await getModel();
+    const parts = [prompt];
+    if (photo) parts.push({ type: "inlineData", inlineData: { data: photo.data, mimeType: photo.mime } });
+    const res = await model.generateContent(parts);
+    let txt = res.response.text().trim().replace(/^```(?:json)?\s*/i, "").replace(/```$/, "").trim();
+    const r = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
+    await compterDiag();
+    renderQuota();
+    renderReport(r);
+  }catch(e){
+    console.error(e);
+    $("#result").hidden = true;
+    const m = String(e?.message || "");
+    show(notice, /quota|429|exhausted/i.test(m) ? "Le service d’analyse est très demandé. Réessayez dans une minute."
+      : /api.*not.*enabled|403|PERMISSION/i.test(m) ? "Le service d’analyse n’est pas encore activé dans Firebase (AI Logic)."
+      : "L’analyse a échoué. Vérifiez votre connexion et réessayez.");
+  }finally{ btn.disabled = false; }
+});
+
+const list = a => (a && a.length) ? "<ul>" + a.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>" : "<p>—</p>";
+function renderReport(r){
+  const d = (r.difficulte || "").toLowerCase();
+  const dc = d.startsWith("fac") ? "d1" : d.startsWith("dif") ? "d3" : "d2";
+  $("#report").innerHTML = `
+    <h2>${esc(r.panne || "Diagnostic")}</h2>
+    <p>${esc(r.resume)}</p>
+    <div class="meta">
+      <span class="tag ${dc}">Difficulté : ${esc(r.difficulte || "—")}</span>
+      <span class="tag">Durée : ${esc(r.duree || "—")}</span>
+      <span class="tag">Coût estimé : ${esc(r.cout || "—")}</span>
+    </div>
+    <div class="cols">
+      <div><h3>Causes probables</h3>${list(r.causes)}</div>
+      <div><h3>Outils</h3>${list(r.outils)}</div>
+      <div><h3>Pièces</h3>${list(r.pieces)}</div>
+    </div>
+    <h3>Méthode de réparation</h3>
+    <ol class="steps">${(r.etapes || []).map(s => `<li><div><strong>${esc(s.titre)}</strong>${esc(s.detail)}</div></li>`).join("")}</ol>
+    ${(r.precautions && r.precautions.length) ? `<div class="warnbox"><h3>Précautions</h3>${list(r.precautions)}</div>` : ""}
+    ${r.si_echec ? `<p style="margin-top:1rem"><strong>Si ça ne marche pas :</strong> ${esc(r.si_echec)}</p>` : ""}
+    <div class="actions"><a class="btn btn-ghost" href="#diagnostic">Analyser une autre panne</a></div>`;
+}
+
+/* ==========================================================
+   COURS
+   ========================================================== */
+const cacheLecons = {};
+function renderCourses(){
+  const actif = isActive();
+  $("#courseList").innerHTML = CATALOGUE.map(c => `
+    <div class="course">
+      <button type="button" aria-expanded="false">
+        <span class="lv">${esc(c.niveau)}</span>
+        <h3>${esc(c.titre)}</h3>
+        <span class="cmeta">${c.lecons.length} leçons</span>
+      </button>
+      <div class="lessons">
+        ${c.lecons.map((l, j) => `<div class="lesson" data-id="${l.id}">
+            <button type="button" aria-expanded="false"><span>${j+1}. ${esc(l.t)}</span><span class="lock">${l.gratuit ? "Gratuit" : (actif ? "" : "Abonnés")}</span></button>
+            <div class="body"></div>
+          </div>`).join("")}
+      </div>
+    </div>`).join("");
+  document.querySelectorAll(".course > button").forEach(b => b.addEventListener("click", () => {
+    const o = b.parentElement.classList.toggle("open"); b.setAttribute("aria-expanded", o);
+  }));
+  document.querySelectorAll(".lesson > button").forEach(b => b.addEventListener("click", () => {
+    const el = b.parentElement, o = el.classList.toggle("open"); b.setAttribute("aria-expanded", o);
+    if (o) ouvrirLecon(el);
+  }));
+}
+function trouverLecon(id){ for (const c of CATALOGUE) for (const l of c.lecons) if (l.id === id) return l; return null; }
+async function ouvrirLecon(el){
+  const id = el.dataset.id, l = trouverLecon(id), body = el.querySelector(".body");
+  if (l.gratuit) { body.innerHTML = l.gratuit; return; }
+  if (!user) { body.innerHTML = `<p>Cette leçon est réservée aux abonnés. <button type="button" class="linkbtn" style="color:var(--copper-ink);padding:0" data-login>Se connecter</button> ou <a href="#abonnements">voir les abonnements</a>.</p>`; body.querySelector("[data-login]").onclick = () => openDlg("#loginDlg"); return; }
+  if (!isActive()) { body.innerHTML = `<p>Cette leçon est réservée aux abonnés Pro et Atelier. <a href="#abonnements">Voir les abonnements</a></p>`; return; }
+  if (cacheLecons[id]) { body.innerHTML = cacheLecons[id]; return; }
+  body.innerHTML = '<div class="thinking"><div class="spin"></div><span>Chargement…</span></div>';
+  try{
+    const s = await F.getDoc(F.doc(db, "lecons", id));
+    const html = s.exists() ? (s.data().contenu || "") : "";
+    cacheLecons[id] = html || "<p>Cette leçon arrive très bientôt.</p>";
+    body.innerHTML = cacheLecons[id];
+  }catch(e){
+    body.innerHTML = /permission/i.test(e.message) ? `<p>Votre abonnement est terminé. <a href="#abonnements">Le renouveler</a></p>` : "<p>Impossible de charger la leçon. Vérifiez votre connexion.</p>";
+  }
+}
+
+/* ==========================================================
+   ABONNEMENTS ET PAIEMENTS
+   ========================================================== */
+const planNom = id => CONFIG.plans.find(p => p.id === id)?.nom || "Pro";
+function renderStatus(){
+  const s = $("#planStatus");
+  if (!user) { s.hidden = true; return; }
+  const fin = finAbo();
+  s.hidden = false;
+  s.innerHTML = isAdmin() ? "<strong>Administrateur</strong> : accès complet"
+    : (fin && fin > new Date()) ? `<strong>Abonnement ${esc(planNom(profil.plan))} actif</strong> jusqu’au ${esc(fmtDate(fin))}`
+    : fin ? `<strong>Votre abonnement est terminé</strong> depuis le ${esc(fmtDate(fin))}. Renouvelez-le pour retrouver l’accès.`
+    : "Vous êtes sur la formule <strong>Gratuite</strong>.";
+}
+$("#plans").innerHTML = CONFIG.plans.map(p => `
+  <div class="plan ${p.badge ? "best" : ""}">
+    ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ""}
+    <h3>${esc(p.nom)}</h3>
+    <p class="price">${esc(p.prix)} <small>${esc(p.periode)}</small></p>
+    <ul>${p.avantages.map(a => "<li>" + esc(a) + "</li>").join("")}</ul>
+    <button class="btn ${p.badge ? "btn-copper" : "btn-ghost"}" type="button" data-plan="${p.id}">${esc(p.bouton)}</button>
+  </div>`).join("");
+
+let planChoisi = null;
+document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", () => {
+  const p = CONFIG.plans.find(x => x.id === b.dataset.plan);
+  if (p.id === "gratuit") { if (!user) openDlg("#loginDlg"); else location.hash = "diagnostic"; return; }
+  if (!user) { openDlg("#loginDlg"); show($("#loginMsg"), "Connectez-vous d’abord : l’abonnement sera lié à votre compte."); return; }
+  planChoisi = p;
+  $("#payTitle").textContent = "Abonnement " + p.nom;
+  $("#payPrice").textContent = "Montant : " + p.prix + " " + p.periode;
+  $("#payNum").textContent = CONFIG.telephonePaiement;
+  if (user.phoneNumber) $("#payFrom").value = user.phoneNumber;
+  const msg = encodeURIComponent(`Bonjour, j’ai payé l’abonnement ${p.nom} (${p.prix} ${p.periode}) sur ${CONFIG.nomSite}. Mon compte : ${user.email || user.phoneNumber}.`);
+  $("#payWa").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + msg;
+  show($("#payMsg"), ""); $("#payMsg").className = "notice";
+  openDlg("#payDlg");
+}));
+
+$("#paySend").addEventListener("click", async () => {
+  const ref = $("#payRef").value.trim(), from = cleanTel($("#payFrom").value), m = $("#payMsg");
+  m.className = "notice";
+  if (from.length < 9) { show(m, "Écrivez le numéro qui a envoyé l’argent."); return; }
+  if (ref.length < 4) { show(m, "Écrivez la référence de la transaction, elle se trouve dans le SMS de confirmation."); return; }
+  const b = $("#paySend"); b.disabled = true;
+  try{
+    await F.addDoc(F.collection(db, "paiements"), {
+      uid: user.uid, nom: nomAffiche(), email: user.email || "", telephone: user.phoneNumber || "",
+      plan: planChoisi.id, montant: planChoisi.prix, operateur: $("#payOp").value,
+      telephonePayeur: from, reference: ref, statut: "en_attente", date: F.serverTimestamp()
+    });
+    m.className = "okmsg";
+    show(m, "Demande envoyée. Votre compte sera activé dès que le paiement est vérifié. Pour aller plus vite, prévenez-nous sur WhatsApp.");
+    $("#payRef").value = "";
+  }catch(e){ console.error(e); show(m, "L’envoi a échoué. Vérifiez votre connexion, ou envoyez la capture sur WhatsApp."); }
+  b.disabled = false;
+});
+
+async function chargerMesPaiements(){
+  const box = $("#acctPays"); box.innerHTML = "";
+  if (!user) return;
+  try{
+    const snap = await F.getDocs(F.query(F.collection(db, "paiements"), F.where("uid", "==", user.uid)));
+    const rows = snap.docs.map(d => d.data()).sort((a,b) => (b.date?.seconds||0) - (a.date?.seconds||0)).slice(0,5);
+    if (!rows.length) return;
+    const lib = { en_attente:"en attente", valide:"validé", refuse:"refusé" };
+    box.innerHTML = `<p class="small" style="margin:0">Mes derniers paiements</p><ul class="pay-list">${rows.map(p =>
+      `<li>${esc(planNom(p.plan))} · ${esc(p.montant)} FCFA · <strong>${esc(lib[p.statut] || p.statut)}</strong>${p.date ? " · " + esc(fmtDate(p.date.toDate())) : ""}</li>`).join("")}</ul>`;
+  }catch(e){ console.warn(e); }
+}
+
+/* ==========================================================
+   ADMINISTRATION
+   ========================================================== */
+async function activer(uid, plan, jours){
+  const ref = F.doc(db, "users", uid);
+  const s = await F.getDoc(ref);
+  const cur = s.data()?.finAbonnement?.toDate?.();
+  const base = cur && cur > new Date() ? cur : new Date();
+  const fin = new Date(base.getTime() + jours * 864e5);
+  await F.updateDoc(ref, { plan, finAbonnement: F.Timestamp.fromDate(fin) });
+  return fin;
+}
+
+async function admPaiements(){
+  const box = $("#admPay");
+  box.innerHTML = '<p class="small">Chargement…</p>';
+  try{
+    const snap = await F.getDocs(F.query(F.collection(db, "paiements"), F.where("statut", "==", "en_attente")));
+    const docs = snap.docs.sort((a,b) => (b.data().date?.seconds||0) - (a.data().date?.seconds||0));
+    if (!docs.length) { box.innerHTML = '<p class="small">Aucun paiement en attente.</p>'; return; }
+    box.innerHTML = docs.map(d => { const p = d.data(); return `
+      <div class="rowitem" data-pid="${d.id}" data-uid="${esc(p.uid)}" data-plan="${esc(p.plan)}">
+        <div class="who">${esc(p.nom || "Client")} <span class="small">${esc(p.email || p.telephone || "")}</span></div>
+        <div class="small">${esc(planNom(p.plan))} · ${esc(p.montant)} FCFA · ${esc(p.operateur)} depuis ${esc(p.telephonePayeur)}<br>Référence : <strong>${esc(p.reference)}</strong>${p.date ? " · " + esc(p.date.toDate().toLocaleString("fr-FR")) : ""}</div>
+        <div class="btns"><button class="btn btn-copper btn-sm" data-act="ok" type="button">Valider et activer</button><button class="btn btn-ghost btn-sm" data-act="no" type="button">Refuser</button></div>
+      </div>`; }).join("");
+    box.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", async () => {
+      const row = b.closest(".rowitem"); b.disabled = true;
+      try{
+        if (b.dataset.act === "ok"){
+          const plan = CONFIG.plans.find(x => x.id === row.dataset.plan) || CONFIG.plans[1];
+          const fin = await activer(row.dataset.uid, plan.id, plan.jours);
+          await F.updateDoc(F.doc(db, "paiements", row.dataset.pid), { statut: "valide", traiteLe: F.serverTimestamp(), finAbonnement: F.Timestamp.fromDate(fin) });
+          row.innerHTML = `<p class="okmsg" style="margin:0">Validé. Abonnement actif jusqu’au ${esc(fmtDate(fin))}.</p>`;
+        } else {
+          await F.updateDoc(F.doc(db, "paiements", row.dataset.pid), { statut: "refuse", traiteLe: F.serverTimestamp() });
+          row.innerHTML = `<p class="small" style="margin:0">Paiement refusé.</p>`;
+        }
+      }catch(e){ console.error(e); b.disabled = false; alertRow(row, e); }
+    }));
+  }catch(e){ console.error(e); box.innerHTML = `<p class="notice">Impossible de charger les paiements : ${esc(e.message)}</p>`; }
+}
+function alertRow(row, e){ const p = document.createElement("p"); p.className = "notice"; p.textContent = "Erreur : " + (e.message || e); row.appendChild(p); }
+
+async function admClients(term){
+  const box = $("#admUsers");
+  box.innerHTML = '<p class="small">Chargement…</p>';
+  try{
+    let docs;
+    if (term){
+      const t = term.includes("@") ? term.trim().toLowerCase() : cleanTel(term);
+      const field = term.includes("@") ? "email" : "telephone";
+      docs = (await F.getDocs(F.query(F.collection(db, "users"), F.where(field, "==", t)))).docs;
+    } else {
+      docs = (await F.getDocs(F.query(F.collection(db, "users"), F.orderBy("creeLe", "desc"), F.limit(30)))).docs;
+    }
+    if (!docs.length) { box.innerHTML = '<p class="small">Aucun client trouvé. Pour un email, écrivez-le exactement comme le client l’a utilisé.</p>'; return; }
+    box.innerHTML = docs.map(d => { const u = d.data(); const fin = u.finAbonnement?.toDate?.(); const actif = fin && fin > new Date(); return `
+      <div class="rowitem" data-uid="${d.id}">
+        <div class="who">${esc(u.nom || "Sans nom")} <span class="small">${esc([u.email, u.telephone].filter(Boolean).join(" · "))}</span></div>
+        <div class="small">${actif ? `${esc(planNom(u.plan))} actif jusqu’au ${esc(fmtDate(fin))}` : (fin ? `Terminé le ${esc(fmtDate(fin))}` : "Gratuit")}</div>
+        <div class="btns">
+          <button class="btn btn-copper btn-sm" data-u="pro" type="button">+1 mois Pro</button>
+          <button class="btn btn-ghost btn-sm" data-u="atelier" type="button">+1 an Atelier</button>
+          <button class="btn btn-ghost btn-sm" data-u="stop" type="button">Arrêter</button>
+        </div>
+      </div>`; }).join("");
+    box.querySelectorAll("[data-u]").forEach(b => b.addEventListener("click", async () => {
+      const row = b.closest(".rowitem"); b.disabled = true;
+      try{
+        if (b.dataset.u === "stop") await F.updateDoc(F.doc(db, "users", row.dataset.uid), { plan: "gratuit", finAbonnement: F.Timestamp.fromDate(new Date()) });
+        else { const p = CONFIG.plans.find(x => x.id === b.dataset.u); await activer(row.dataset.uid, p.id, p.jours); }
+        admClients(term);
+      }catch(e){ console.error(e); b.disabled = false; alertRow(row, e); }
+    }));
+  }catch(e){ console.error(e); box.innerHTML = `<p class="notice">Impossible de charger les clients : ${esc(e.message)}</p>`; }
+}
+
+function admLecons(){
+  const sel = $("#admLesson");
+  sel.innerHTML = CATALOGUE.flatMap(c => c.lecons.filter(l => !l.gratuit).map(l => `<option value="${l.id}">${esc(c.titre)} – ${esc(l.t)}</option>`)).join("");
+  chargerLeconAdmin();
+}
+async function chargerLeconAdmin(){
+  $("#admContent").value = "Chargement…"; $("#admLessonMsg").textContent = "";
+  try { const s = await F.getDoc(F.doc(db, "lecons", $("#admLesson").value)); $("#admContent").value = s.exists() ? (s.data().contenu || "") : ""; }
+  catch(e){ $("#admContent").value = ""; $("#admLessonMsg").textContent = "Erreur : " + e.message; }
+}
+$("#admLesson").addEventListener("change", chargerLeconAdmin);
+$("#admSaveLesson").addEventListener("click", async () => {
+  const id = $("#admLesson").value, l = trouverLecon(id);
+  try { await F.setDoc(F.doc(db, "lecons", id), { titre: l.t, contenu: $("#admContent").value, maj: F.serverTimestamp() }); delete cacheLecons[id]; $("#admLessonMsg").textContent = "Leçon enregistrée."; }
+  catch(e){ $("#admLessonMsg").textContent = "Erreur : " + e.message; }
+});
+$("#admImportBtn").addEventListener("click", async () => {
+  const msg = $("#admImportMsg");
+  let data;
+  try { data = JSON.parse($("#admImport").value); } catch(e){ msg.textContent = "Le texte collé n’est pas un JSON valide."; return; }
+  const batch = F.writeBatch(db); let n = 0;
+  for (const [id, contenu] of Object.entries(data)){
+    const l = trouverLecon(id); if (!l) continue;
+    batch.set(F.doc(db, "lecons", id), { titre: l.t, contenu: String(contenu), maj: F.serverTimestamp() }); n++;
+  }
+  if (!n) { msg.textContent = "Aucune leçon reconnue dans le texte collé."; return; }
+  try { await batch.commit(); msg.textContent = `${n} leçon${n>1?"s":""} importée${n>1?"s":""}.`; $("#admImport").value = ""; Object.keys(cacheLecons).forEach(k => delete cacheLecons[k]); chargerLeconAdmin(); }
+  catch(e){ msg.textContent = "Erreur : " + e.message; }
+});
+$("#admPayRefresh").addEventListener("click", admPaiements);
+$("#admSearchBtn").addEventListener("click", () => admClients($("#admSearch").value.trim()));
+$("#admSearch").addEventListener("keydown", e => { if (e.key === "Enter") admClients($("#admSearch").value.trim()); });
+
+/* ==========================================================
+   NAVIGATION
+   ========================================================== */
+let adminCharge = false;
+function route(){
+  const admin = location.hash === "#admin" && isAdmin();
+  $("#site").hidden = admin; $("#admin").hidden = !admin;
+  if (admin && !adminCharge) { adminCharge = true; admPaiements(); admClients(""); admLecons(); }
+  if (admin) window.scrollTo(0, 0);
+}
+window.addEventListener("hashchange", route);
+renderCourses();
+</script>
+</body>
+</html>
