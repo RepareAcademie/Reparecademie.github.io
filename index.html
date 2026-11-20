@@ -1,1040 +1,785 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Répar’Académie – Apprendre la réparation de téléphones</title>
-<meta name="description" content="Décrivez la panne ou prenez une photo : diagnostic et méthode de réparation pas à pas. Cours complets pour réparateurs de téléphones.">
-<meta name="theme-color" content="#0E3B36">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --board:#0E3B36; --board-2:#14504A; --copper:#C9822B; --copper-ink:#8A5413;
-  --paper:#F6F7F4; --card:#FFFFFF; --ink:#14201E; --muted:#56635F; --line:#D9DCD6;
-  --ok:#2F7D4F; --warn:#B4442E;
-  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
-  --body:"Barlow","Segoe UI",Roboto,Arial,sans-serif;
-  color-scheme:light;
-}
-@media (prefers-color-scheme:dark){
-  :root{
-    --board:#0B2E2A; --board-2:#124540; --copper:#E39B45; --copper-ink:#F2B970;
-    --paper:#101816; --card:#17221F; --ink:#E8EDEA; --muted:#9AA8A3; --line:#2A3834;
-    --ok:#5DBB82; --warn:#E57A62; color-scheme:dark;
-  }
-}
-*,*::before,*::after{box-sizing:border-box}
-html{scroll-padding-top:72px;scroll-behavior:smooth}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.55}
-img{max-width:100%}
-a{color:inherit}
-:focus-visible{outline:3px solid var(--copper);outline-offset:2px}
-.wrap{max-width:1120px;margin:0 auto;padding:0 1rem}
-[hidden]{display:none!important}
-
-header.top{position:sticky;top:0;z-index:9;background:var(--board);color:#fff}
-header.top .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;gap:.75rem}
-.logo{font-family:var(--display);font-weight:800;font-size:1.5rem;text-decoration:none;display:flex;align-items:center;gap:.45rem;white-space:nowrap}
-.logo svg{width:24px;height:24px;flex:none}
-nav.links{display:flex;gap:1.1rem;align-items:center}
-nav.links a{text-decoration:none;color:#D6E4E0;font-weight:500}
-nav.links a:hover{color:#fff}
-@media (max-width:700px){nav.links a.hide-sm{display:none}}
-@media (max-width:400px){.logo{font-size:1.25rem}.logo svg{width:20px;height:20px}.acct{padding:.35rem .7rem}}
-.acct{background:var(--copper);color:#1B1206;border:none;border-radius:999px;font:inherit;font-weight:600;padding:.4rem .9rem;cursor:pointer;white-space:nowrap;max-width:46vw;overflow:hidden;text-overflow:ellipsis}
-
-.hero{background:var(--board);color:#fff;padding:2.25rem 0 3rem;position:relative;overflow:hidden}
-.hero::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.12;
-  background-image:linear-gradient(90deg,transparent 49%,#C9822B 49%,#C9822B 51%,transparent 51%),linear-gradient(0deg,transparent 49%,#C9822B 49%,#C9822B 51%,transparent 51%);
-  background-size:120px 80px,80px 120px;-webkit-mask-image:linear-gradient(90deg,transparent 40%,#000 100%);mask-image:linear-gradient(90deg,transparent 40%,#000 100%)}
-.hero-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:2.5rem;align-items:start;position:relative;z-index:1}
-@media (max-width:860px){.hero-grid{grid-template-columns:1fr;gap:1.75rem}}
-.hero h1{font-family:var(--display);font-weight:800;font-size:clamp(2.3rem,6vw,4.2rem);line-height:.98;margin:.25rem 0 1rem}
-.hero p.lead{color:#CFE0DB;max-width:34ch;font-size:1.15rem;margin:0 0 1.5rem}
-.hero ul.facts{list-style:none;padding:0;margin:0;display:grid;gap:.6rem;color:#CFE0DB}
-.hero ul.facts li{display:flex;gap:.6rem;align-items:baseline}
-.hero ul.facts li::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--copper);flex:none}
-
-.bench{background:var(--card);color:var(--ink);border-radius:14px;padding:1.25rem;box-shadow:0 18px 40px rgba(0,0,0,.25)}
-.bench h2{font-family:var(--display);font-size:1.6rem;margin:0 0 .25rem}
-.sub{color:var(--muted);margin:0 0 1rem;font-size:.97rem}
-label.f{display:block;font-weight:600;margin:.85rem 0 .35rem;font-size:.95rem}
-select,textarea,input[type=text],input[type=email],input[type=password],input[type=tel]{width:100%;font:inherit;color:var(--ink);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:.65rem .75rem}
-textarea{min-height:110px;resize:vertical}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-@media (max-width:480px){.row2{grid-template-columns:1fr}}
-.drop{border:2px dashed var(--line);border-radius:10px;padding:1rem;text-align:center;cursor:pointer;color:var(--muted);background:var(--paper);position:relative}
-.drop input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
-.preview{display:none;align-items:center;gap:.75rem;margin-top:.6rem}
-.preview img{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--line)}
-.linkbtn{background:none;border:none;color:var(--warn);font:inherit;font-weight:600;cursor:pointer;padding:.25rem}
-.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
-.chip{border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:.25rem .7rem;font:inherit;font-size:.88rem;cursor:pointer}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;font:inherit;font-weight:600;border:none;border-radius:8px;padding:.75rem 1.15rem;cursor:pointer;text-decoration:none;line-height:1.2}
-.btn-copper{background:var(--copper);color:#1B1206}
-.btn-ghost{background:transparent;border:1.5px solid var(--line);color:var(--ink)}
-.btn-full{width:100%}
-.btn-sm{padding:.45rem .7rem;font-size:.92rem}
-.btn[disabled]{opacity:.55;cursor:not-allowed}
-.actions{display:flex;gap:.75rem;align-items:center;margin-top:1rem;flex-wrap:wrap}
-.quota{font-size:.9rem;color:var(--muted)}
-.notice{margin-top:.75rem;padding:.7rem .85rem;border-radius:8px;background:color-mix(in srgb,var(--warn) 13%,transparent);color:var(--ink);font-size:.95rem}
-.okmsg{margin-top:.75rem;padding:.7rem .85rem;border-radius:8px;background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ink);font-size:.95rem}
-
-#result{padding:2.25rem 0}
-.report{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:1.4rem}
-.report h2{font-family:var(--display);font-size:2rem;margin:0 0 .4rem;line-height:1.05}
-.meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:.5rem 0 1.25rem}
-.tag{font-size:.88rem;font-weight:600;padding:.2rem .6rem;border-radius:6px;background:var(--paper);border:1px solid var(--line)}
-.tag.d1{color:var(--ok)} .tag.d2{color:var(--copper-ink)} .tag.d3{color:var(--warn)}
-.cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1.25rem;margin-bottom:1.5rem}
-@media (max-width:760px){.cols{grid-template-columns:1fr}}
-.report h3{font-family:var(--display);font-size:1.25rem;margin:0 0 .4rem}
-.cols ul{margin:0;padding-left:1.1rem}
-ol.steps{list-style:none;padding:0;margin:0;counter-reset:s}
-ol.steps li{counter-increment:s;display:grid;grid-template-columns:2.4rem 1fr;gap:.75rem;padding:.9rem 0;border-top:1px solid var(--line)}
-ol.steps li::before{content:counter(s);font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--board-2);background:color-mix(in srgb,var(--copper) 22%,transparent);border-radius:8px;display:grid;place-items:center;height:2.4rem}
-@media (prefers-color-scheme:dark){ol.steps li::before{color:var(--copper-ink)}}
-ol.steps strong{display:block}
-.warnbox{margin-top:1.25rem;border-left:4px solid var(--warn);padding:.6rem .9rem;background:var(--paper);border-radius:0 8px 8px 0}
-.thinking{display:flex;align-items:center;gap:.75rem;color:var(--muted)}
-.spin{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--copper);border-radius:50%;animation:sp .9s linear infinite;flex:none}
-@keyframes sp{to{transform:rotate(360deg)}}
-
-section.block{padding:3.5rem 0}
-h2.title{font-family:var(--display);font-weight:800;font-size:clamp(2rem,4.5vw,3rem);margin:0 0 .5rem;line-height:1}
-p.intro{color:var(--muted);max-width:60ch;margin:0 0 2rem}
-.courses{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:1rem;align-items:start}
-.course{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
-.course > button{all:unset;display:block;width:100%;box-sizing:border-box;padding:1.1rem 1.2rem;cursor:pointer}
-.course > button:focus-visible,.lesson > button:focus-visible{outline:3px solid var(--copper);outline-offset:-3px}
-.course h3{font-family:var(--display);font-size:1.45rem;margin:0 0 .2rem}
-.course .cmeta{color:var(--muted);font-size:.92rem}
-.course .lv{float:right;font-size:.82rem;font-weight:600;color:var(--copper-ink)}
-.lessons{display:none;border-top:1px solid var(--line)}
-.course.open .lessons{display:block}
-.lesson{border-bottom:1px solid var(--line)}
-.lesson:last-child{border-bottom:none}
-.lesson > button{all:unset;display:flex;justify-content:space-between;gap:.5rem;width:100%;box-sizing:border-box;padding:.75rem 1.2rem;cursor:pointer;font-weight:500}
-.lesson .lock{font-size:.82rem;color:var(--muted);white-space:nowrap}
-.lesson .body{display:none;padding:0 1.2rem 1rem}
-.lesson.open .body{display:block}
-.lesson .body ul,.lesson .body ol{padding-left:1.2rem;margin:.4rem 0}
-
-.alt{background:var(--card);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
-@media (max-width:860px){.plans{grid-template-columns:1fr}}
-.plan{border:1.5px solid var(--line);border-radius:12px;padding:1.4rem;display:flex;flex-direction:column;background:var(--paper)}
-.plan.best{border-color:var(--copper);background:var(--card);box-shadow:0 0 0 3px color-mix(in srgb,var(--copper) 25%,transparent)}
-.plan h3{font-family:var(--display);font-size:1.6rem;margin:0}
-.price{font-family:var(--display);font-weight:800;font-size:2.4rem;margin:.4rem 0 0;line-height:1}
-.price small{font-family:var(--body);font-weight:500;font-size:.95rem;color:var(--muted)}
-.plan ul{padding-left:1.1rem;margin:1rem 0 1.4rem;flex:1}
-.plan .badge{font-size:.85rem;font-weight:600;color:var(--copper-ink);margin-bottom:.3rem}
-.status{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;padding:.85rem 1rem;border:1px solid var(--line);border-radius:10px;background:var(--paper);margin-bottom:1.5rem}
-
-footer{background:var(--board);color:#CFE0DB;padding:2rem 0;font-size:.95rem}
-footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-
-dialog{border:none;border-radius:14px;padding:0;max-width:460px;width:calc(100% - 2rem);background:var(--card);color:var(--ink);max-height:calc(100dvh - 2rem)}
-dialog::backdrop{background:rgba(0,0,0,.55)}
-dialog .in{padding:1.4rem}
-dialog h3{font-family:var(--display);font-size:1.7rem;margin:0 0 .5rem;line-height:1.05}
-.dhead{display:flex;justify-content:space-between;align-items:start;gap:1rem}
-.xbtn{background:none;border:none;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted);padding:.1rem .3rem}
-.tabs{display:flex;gap:.25rem;border-bottom:1.5px solid var(--line);margin:.5rem 0 1rem}
-.tabs button{all:unset;cursor:pointer;padding:.55rem .75rem;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;margin-bottom:-1.5px}
-.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--copper)}
-.gbtn{display:flex;align-items:center;justify-content:center;gap:.6rem;width:100%;background:#fff;color:#1f1f1f;border:1.5px solid #dadce0;border-radius:8px;padding:.75rem;font:inherit;font-weight:600;cursor:pointer}
-.gbtn svg{width:20px;height:20px}
-.small{font-size:.9rem;color:var(--muted)}
-.num{font-family:var(--display);font-size:1.6rem;font-weight:700;color:var(--copper-ink)}
-.pay-list{display:grid;gap:.5rem;margin:.5rem 0 0;padding:0;list-style:none}
-.pay-list li{border:1px solid var(--line);border-radius:8px;padding:.55rem .75rem;font-size:.95rem}
-
-/* Admin */
-#admin{padding:2.5rem 0 4rem}
-.panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem;margin-bottom:1.25rem}
-.panel h3{font-family:var(--display);font-size:1.5rem;margin:0 0 .75rem}
-.rowitem{border-top:1px solid var(--line);padding:.8rem 0;display:grid;gap:.5rem}
-.rowitem:first-of-type{border-top:none}
-.rowitem .who{font-weight:600}
-.rowitem .btns{display:flex;flex-wrap:wrap;gap:.4rem}
-.searchrow{display:flex;gap:.5rem;margin-bottom:.75rem}
-.searchrow input{flex:1}
-</style>
-</head>
-<body>
-
-<header class="top">
-  <div class="wrap">
-    <a class="logo" href="#diagnostic">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#C9822B" stroke-width="2" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><path d="M10 18h4"/><path d="M9 8l3 3 3-3"/></svg>
-      Répar’Académie
-    </a>
-    <nav class="links" aria-label="Navigation principale">
-      <a href="#diagnostic" class="hide-sm">Diagnostic</a>
-      <a href="#cours" class="hide-sm">Cours</a>
-      <a href="#abonnements" class="hide-sm">Abonnements</a>
-      <button class="acct" id="acctBtn" type="button">Se connecter</button>
-    </nav>
-  </div>
-</header>
-
-<main id="site">
-<section class="hero" id="diagnostic">
-  <div class="wrap hero-grid">
-    <div>
-      <h1>Décrivez la panne. On vous montre comment la réparer.</h1>
-      <p class="lead">Écrivez le problème ou prenez une photo du défaut : vous recevez le diagnostic et la méthode de réparation pas à pas.</p>
-      <ul class="facts">
-        <li>Écran, batterie, charge, son, réseau, carte mère, logiciel</li>
-        <li>Android et iPhone, toutes marques</li>
-        <li>Outils, pièces et précautions indiqués à chaque fois</li>
-        <li>Cours complets pour devenir réparateur</li>
-      </ul>
-    </div>
-
-    <div class="bench">
-      <h2>Analyser une panne</h2>
-      <p class="sub">Plus vous donnez de détails, plus la méthode est précise.</p>
-      <div class="row2">
-        <div>
-          <label class="f" for="brand">Marque</label>
-          <select id="brand">
-            <option>Samsung</option><option>iPhone</option><option>Tecno</option><option>Infinix</option>
-            <option>Itel</option><option>Xiaomi / Redmi</option><option>Huawei</option><option>Oppo</option>
-            <option>Vivo</option><option>Nokia</option><option>Autre</option>
-          </select>
-        </div>
-        <div>
-          <label class="f" for="model">Modèle (facultatif)</label>
-          <input type="text" id="model" placeholder="Ex. Galaxy A12, Spark 10">
-        </div>
-      </div>
-      <label class="f" for="desc">Description de la panne</label>
-      <textarea id="desc" placeholder="Ex. Le téléphone ne charge plus. Quand je branche le câble, rien ne s’affiche. Il est tombé dans l’eau la semaine dernière."></textarea>
-      <div class="chips" aria-label="Exemples de pannes">
-        <button class="chip" type="button">Ne charge plus</button>
-        <button class="chip" type="button">Écran noir mais il vibre</button>
-        <button class="chip" type="button">Bloqué sur le logo</button>
-        <button class="chip" type="button">Pas de son en appel</button>
-        <button class="chip" type="button">Batterie gonflée</button>
-      </div>
-      <label class="f">Photo du défaut (facultatif)</label>
-      <div class="drop">
-        <span id="dropText">Touchez pour prendre ou choisir une photo</span>
-        <input type="file" id="photo" accept="image/*" aria-label="Ajouter une photo du défaut">
-      </div>
-      <div class="preview" id="preview">
-        <img id="previewImg" alt="Photo du défaut">
-        <button type="button" class="linkbtn" id="removePhoto">Retirer la photo</button>
-      </div>
-      <div class="actions">
-        <button class="btn btn-copper" id="analyze" type="button">Analyser la panne</button>
-        <span class="quota" id="quota">Connectez-vous pour lancer un diagnostic</span>
-      </div>
-      <div class="notice" id="notice" role="alert" hidden></div>
-    </div>
-  </div>
-</section>
-
-<section id="result" aria-live="polite" hidden>
-  <div class="wrap"><div class="report" id="report"></div></div>
-</section>
-
-<section class="block" id="cours">
-  <div class="wrap">
-    <h2 class="title">Les cours</h2>
-    <p class="intro">La première leçon de chaque cours est gratuite. Les autres sont réservées aux abonnés Pro et Atelier.</p>
-    <div class="courses" id="courseList"></div>
-  </div>
-</section>
-
-<section class="block alt" id="abonnements">
-  <div class="wrap">
-    <h2 class="title">Abonnements</h2>
-    <p class="intro">Payez par Orange Money, Moov Money ou Wave. Votre compte est activé dès que le paiement est vérifié, et l’accès s’arrête automatiquement à la fin de la période.</p>
-    <div class="status" id="planStatus" hidden></div>
-    <div class="plans" id="plans"></div>
-  </div>
-</section>
-</main>
-
-<section id="admin" hidden>
-  <div class="wrap">
-    <h2 class="title">Administration</h2>
-    <p class="intro">Validez les paiements, activez les abonnements et gérez les leçons payantes.</p>
-
-    <div class="panel">
-      <h3>Paiements en attente</h3>
-      <div id="admPay"><p class="small">Chargement…</p></div>
-      <button class="btn btn-ghost btn-sm" id="admPayRefresh" type="button">Actualiser</button>
-    </div>
-
-    <div class="panel">
-      <h3>Clients</h3>
-      <div class="searchrow">
-        <input type="text" id="admSearch" placeholder="Email ou téléphone (+223…)" aria-label="Rechercher un client">
-        <button class="btn btn-copper btn-sm" id="admSearchBtn" type="button">Chercher</button>
-      </div>
-      <div id="admUsers"><p class="small">Chargement…</p></div>
-    </div>
-
-    <div class="panel">
-      <h3>Leçons payantes</h3>
-      <label class="f" for="admLesson">Leçon</label>
-      <select id="admLesson"></select>
-      <label class="f" for="admContent">Contenu (texte ou HTML)</label>
-      <textarea id="admContent" style="min-height:220px"></textarea>
-      <div class="actions">
-        <button class="btn btn-copper" id="admSaveLesson" type="button">Enregistrer la leçon</button>
-        <span class="small" id="admLessonMsg"></span>
-      </div>
-      <label class="f" for="admImport" style="margin-top:1.5rem">Importer plusieurs leçons (JSON)</label>
-      <textarea id="admImport" placeholder='{"bases-2":"<p>…</p>", "ecrans-2":"<p>…</p>"}'></textarea>
-      <div class="actions">
-        <button class="btn btn-ghost" id="admImportBtn" type="button">Importer</button>
-        <span class="small" id="admImportMsg"></span>
-      </div>
-    </div>
-
-    <a class="btn btn-ghost" href="#diagnostic">Retour au site</a>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <span>© <span id="year"></span> Répar’Académie</span>
-    <span id="contactLine"></span>
-  </div>
-</footer>
-
-<!-- Connexion -->
-<dialog id="loginDlg" aria-labelledby="loginTitle">
-  <div class="in">
-    <div class="dhead"><h3 id="loginTitle">Se connecter</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
-    <p class="small" style="margin-top:0">Un seul compte par personne. Votre abonnement est lié à ce compte.</p>
-    <button class="gbtn" id="googleBtn" type="button">
-      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.2-.1-2.3-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
-      Continuer avec Google
-    </button>
-    <div class="tabs" role="tablist">
-      <button type="button" role="tab" aria-selected="true" data-tab="email">Email</button>
-      <button type="button" role="tab" aria-selected="false" data-tab="tel">Téléphone</button>
-    </div>
-
-    <div data-pane="email">
-      <div id="nameRow" hidden>
-        <label class="f" for="regName">Nom complet</label>
-        <input type="text" id="regName" autocomplete="name">
-      </div>
-      <label class="f" for="email">Adresse email</label>
-      <input type="email" id="email" autocomplete="email">
-      <label class="f" for="pass">Mot de passe</label>
-      <input type="password" id="pass" autocomplete="current-password" placeholder="6 caractères minimum">
-      <div class="actions">
-        <button class="btn btn-copper btn-full" id="emailBtn" type="button">Se connecter</button>
-      </div>
-      <p class="small" style="margin:.75rem 0 0">
-        <button type="button" class="linkbtn" style="color:var(--copper-ink)" id="toggleMode">Pas encore de compte ? Créer un compte</button><br>
-        <button type="button" class="linkbtn" style="color:var(--muted)" id="forgotBtn">Mot de passe oublié</button>
-      </p>
-    </div>
-
-    <div data-pane="tel" hidden>
-      <div id="telStep1">
-        <label class="f" for="tel">Numéro de téléphone</label>
-        <input type="tel" id="tel" value="+223 " autocomplete="tel">
-        <div class="actions"><button class="btn btn-copper btn-full" id="sendCode" type="button">Recevoir le code par SMS</button></div>
-      </div>
-      <div id="telStep2" hidden>
-        <label class="f" for="code">Code reçu par SMS</label>
-        <input type="text" id="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6">
-        <div class="actions"><button class="btn btn-copper btn-full" id="checkCode" type="button">Valider le code</button></div>
-        <button type="button" class="linkbtn" style="color:var(--muted)" id="telBack">Changer de numéro</button>
-      </div>
-      <div id="recaptcha"></div>
-    </div>
-    <div class="notice" id="loginMsg" role="alert" hidden></div>
-  </div>
-</dialog>
-
-<!-- Compte -->
-<dialog id="acctDlg" aria-labelledby="acctTitle">
-  <div class="in">
-    <div class="dhead"><h3 id="acctTitle">Mon compte</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
-    <p id="acctWho" style="margin:.25rem 0"></p>
-    <p id="acctPlan" style="margin:.25rem 0 1rem;font-weight:600"></p>
-    <div id="acctPays"></div>
-    <div class="actions">
-      <a class="btn btn-copper" href="#admin" id="adminLink" hidden>Administration</a>
-      <a class="btn btn-ghost" href="#abonnements" id="renewLink">Abonnements</a>
-      <button class="btn btn-ghost" id="logoutBtn" type="button">Se déconnecter</button>
-    </div>
-  </div>
-</dialog>
-
-<!-- Paiement -->
-<dialog id="payDlg" aria-labelledby="payTitle">
-  <div class="in">
-    <div class="dhead"><h3 id="payTitle">Abonnement</h3><button class="xbtn" type="button" data-close aria-label="Fermer">×</button></div>
-    <p id="payPrice" style="margin:.25rem 0 .75rem;font-weight:600"></p>
-    <ol style="padding-left:1.2rem;margin:0">
-      <li>Envoyez le montant par Orange Money, Moov Money ou Wave au numéro :<br><span class="num" id="payNum"></span></li>
-      <li>Remplissez le formulaire ci-dessous et envoyez.</li>
-      <li>Votre compte est activé dès que le paiement est vérifié.</li>
-    </ol>
-    <label class="f" for="payOp">Moyen de paiement</label>
-    <select id="payOp"><option>Orange Money</option><option>Wave</option><option>Moov Money</option></select>
-    <label class="f" for="payFrom">Numéro qui a payé</label>
-    <input type="tel" id="payFrom" value="+223 ">
-    <label class="f" for="payRef">Référence de la transaction (dans le SMS de confirmation)</label>
-    <input type="text" id="payRef" placeholder="Ex. PP251109.1234.A12345">
-    <div class="actions">
-      <button class="btn btn-copper" id="paySend" type="button">J’ai payé, envoyer</button>
-      <a class="btn btn-ghost" id="payWa" target="_blank" rel="noopener">WhatsApp</a>
-    </div>
-    <div class="notice" id="payMsg" role="alert" hidden></div>
-  </div>
-</dialog>
-
-<script type="module">
-/* ==========================================================
-   CONFIGURATION – modifiez ici si besoin
-   ========================================================== */
-const firebaseConfig = {
-  apiKey: "AIzaSyAp9GLDgvSOXdniGSBPSgw465Wt_n5Xd3A",
-  authDomain: "mozuiko-mm.firebaseapp.com",
-  projectId: "mozuiko-mm",
-  storageBucket: "mozuiko-mm.firebasestorage.app",
-  messagingSenderId: "322990021220",
-  appId: "1:322990021220:web:e953f1e326c87749d6dd71"
-};
-const CONFIG = {
-  nomSite: "Répar’Académie",
-  adminEmail: "pofficielvideo@gmail.com",
-  telephonePaiement: "+223 77 37 02 54",
-  whatsapp: "22377370254",
-  diagnosticsGratuitsParJour: 3,
-  modeleIA: "gemini-3.8-flash",
-  plans: [
-    { id:"gratuit", nom:"Gratuit", prix:"0", periode:"FCFA", jours:0, badge:"",
-      avantages:["3 diagnostics par jour","Première leçon de chaque cours","Photos acceptées"], bouton:"Commencer" },
-    { id:"pro", nom:"Pro", prix:"5 000", periode:"FCFA / mois", jours:30, badge:"Le plus choisi",
-      avantages:["Diagnostics illimités","Tous les cours et leçons","Nouvelles leçons chaque mois","Aide par WhatsApp"], bouton:"Choisir Pro" },
-    { id:"atelier", nom:"Atelier", prix:"45 000", periode:"FCFA / an", jours:365, badge:"",
-      avantages:["Tout le plan Pro pendant 12 mois","Attestation de formation","Schémas de cartes mères","Aide prioritaire"], bouton:"Choisir Atelier" }
-  ]
-};
-
-/* ==========================================================
-   CATALOGUE DES COURS
-   - Les leçons avec "gratuit" sont visibles par tous.
-   - Les autres sont chargées depuis la base, réservées aux abonnés.
-   ========================================================== */
-const CATALOGUE = [
-  { id:"bases", titre:"Bases de la réparation", niveau:"Débutant", lecons:[
-    { id:"bases-1", t:"Outils indispensables et poste de travail", gratuit:`<p>Le minimum pour commencer :</p><ul><li>Tournevis de précision (cruciforme 000, pentalobe P2, tri-wing Y0.6, Torx T2-T5)</li><li>Spatules plastique, médiators, ventouse</li><li>Pince brucelles antistatique</li><li>Station à air chaud et fer à souder réglable</li><li>Multimètre, alimentation stabilisée</li><li>Alcool isopropylique 99 %, brosse douce, tapis antistatique</li></ul><p>Travaillez sur une surface propre et bien éclairée, et rangez les vis dans l’ordre de démontage : une vis trop longue remise au mauvais endroit peut percer la carte mère.</p>` },
-    { id:"bases-2", t:"Sécurité : batterie, électricité statique, chaleur" },
-    { id:"bases-3", t:"Ouvrir un téléphone sans le casser" },
-    { id:"bases-4", t:"Lire un diagnostic avec le multimètre" }
-  ]},
-  { id:"ecrans", titre:"Écrans et vitres", niveau:"Débutant", lecons:[
-    { id:"ecrans-1", t:"Reconnaître LCD, OLED et vitre seule", gratuit:`<p><strong>Vitre cassée mais image normale et tactile qui répond :</strong> seule la vitre est touchée.</p><p><strong>Taches noires, lignes de couleur, écran noir alors que le téléphone vibre et sonne :</strong> la dalle est abîmée, il faut changer le bloc complet.</p><p><strong>Tactile qui ne répond plus mais image parfaite :</strong> vérifiez d’abord la nappe et le connecteur, puis le bloc.</p>` },
-    { id:"ecrans-2", t:"Remplacer un bloc écran" },
-    { id:"ecrans-3", t:"Séparer et recoller une vitre" }
-  ]},
-  { id:"batterie", titre:"Batterie et charge", niveau:"Débutant", lecons:[
-    { id:"batterie-1", t:"Le téléphone ne charge plus : par où commencer", gratuit:`<ol><li>Testez avec un autre câble et un autre chargeur qui marchent.</li><li>Nettoyez le connecteur avec une aiguille en plastique : il est souvent plein de poussière.</li><li>Mesurez le courant avec un testeur USB : 0 A signifie que rien ne passe.</li><li>Si rien ne passe, vérifiez le connecteur de charge, puis le circuit de charge sur la carte.</li></ol>` },
-    { id:"batterie-2", t:"Changer une batterie en toute sécurité" },
-    { id:"batterie-3", t:"Remplacer un connecteur de charge soudé" }
-  ]},
-  { id:"son", titre:"Son, micro et vibreur", niveau:"Intermédiaire", lecons:[
-    { id:"son-1", t:"Pas de son en appel : écouteur ou carte", gratuit:`<p>Testez le haut-parleur en mode mains libres, puis l’écouteur en appel normal. Si l’un fonctionne et pas l’autre, c’est la pièce. Si aucun ne marche, suspectez le circuit audio. Pensez aussi à vérifier qu’un casque Bluetooth n’est pas connecté.</p>` },
-    { id:"son-2", t:"Micro qui ne capte plus" }
-  ]},
-  { id:"logiciel", titre:"Logiciel et réinstallation", niveau:"Intermédiaire", lecons:[
-    { id:"logiciel-1", t:"Téléphone bloqué sur le logo", gratuit:`<p>Commencez par le mode récupération : effacez la partition cache (les données restent). Si le téléphone reste bloqué, il faudra réinstaller le système officiel, ce qui est expliqué dans la leçon suivante. Sauvegardez toujours les données avant si c’est possible.</p>` },
-    { id:"logiciel-2", t:"Réinstaller le système officiel" }
-  ]},
-  { id:"carte", titre:"Micro-soudure et carte mère", niveau:"Avancé", lecons:[
-    { id:"carte-1", t:"Lire un schéma de carte mère", gratuit:`<p>Un schéma montre les lignes d’alimentation (VBAT, VPH_PWR, VBUS), les condensateurs de filtrage et les points de test. Repérer ces lignes permet de trouver rapidement un court-circuit ou une alimentation manquante.</p>` },
-    { id:"carte-2", t:"Trouver un court-circuit" },
-    { id:"carte-3", t:"Rebillage d’un circuit intégré" }
-  ]},
-  { id:"eau", titre:"Téléphone tombé dans l’eau", niveau:"Intermédiaire", lecons:[
-    { id:"eau-1", t:"Les bons gestes dans la première heure", gratuit:`<p>Ne pas allumer, ne pas charger, ne pas mettre dans le riz. Ouvrir le téléphone, déconnecter la batterie, puis nettoyer à l’alcool isopropylique et laisser sécher. Plus vous agissez vite, plus vous sauvez la carte.</p>` },
-    { id:"eau-2", t:"Nettoyer l’oxydation sur la carte" }
-  ]},
-  { id:"atelier", titre:"Gérer son atelier", niveau:"Tous niveaux", lecons:[
-    { id:"atelier-1", t:"Fixer ses prix", gratuit:`<p>Prix = coût de la pièce + temps de travail + marge de risque. Affichez des prix clairs et donnez une garantie écrite : un client satisfait revient et en ramène d’autres.</p>` },
-    { id:"atelier-2", t:"Trouver de bons fournisseurs de pièces" }
-  ]}
-];
-
-/* ==========================================================
-   FIREBASE
-   ========================================================== */
-const V = "13.1.0";
-const FB = `https://www.gstatic.com/firebasejs/${V}`;
-const { initializeApp } = await import(`${FB}/firebase-app.js`);
-const A = await import(`${FB}/firebase-auth.js`);
-const F = await import(`${FB}/firebase-firestore.js`);
-
-const app = initializeApp(firebaseConfig);
-const auth = A.getAuth(app);
-auth.languageCode = "fr";
-const db = F.getFirestore(app);
-
-let aiModel = null;
-async function getModel(){
-  if (aiModel) return aiModel;
-  const AI = await import(`${FB}/firebase-ai.js`);
-  const ai = AI.getAI(app, { backend: new AI.GoogleAIBackend() });
-  aiModel = AI.getGenerativeModel(ai, { model: CONFIG.modeleIA, generationConfig: { responseMimeType: "application/json" } });
-  return aiModel;
-}
-
-/* ==========================================================
-   OUTILS
-   ========================================================== */
-const $ = s => document.querySelector(s);
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const today = () => new Date().toISOString().slice(0,10);
-const fmtDate = d => d ? d.toLocaleDateString("fr-FR", { day:"numeric", month:"long", year:"numeric" }) : "";
-const show = (el, msg) => { el.textContent = msg || ""; el.hidden = !msg; };
-const cleanTel = v => v.replace(/[^\d+]/g, "");
-
-$("#year").textContent = new Date().getFullYear();
-$("#contactLine").textContent = "WhatsApp : " + CONFIG.telephonePaiement;
-
-document.querySelectorAll("dialog [data-close]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
-function openDlg(id){ const d = $(id); if (!d.open) d.showModal(); }
-
-const AUTH_ERR = {
-  "auth/invalid-email": "Adresse email invalide.",
-  "auth/invalid-credential": "Email ou mot de passe incorrect.",
-  "auth/wrong-password": "Mot de passe incorrect.",
-  "auth/user-not-found": "Aucun compte avec cet email. Créez un compte.",
-  "auth/email-already-in-use": "Cet email a déjà un compte. Connectez-vous.",
-  "auth/weak-password": "Le mot de passe doit avoir au moins 6 caractères.",
-  "auth/too-many-requests": "Trop d’essais. Attendez quelques minutes puis réessayez.",
-  "auth/invalid-phone-number": "Numéro invalide. Écrivez-le avec l’indicatif, par exemple +223 70 00 00 00.",
-  "auth/invalid-verification-code": "Code incorrect. Vérifiez le SMS.",
-  "auth/code-expired": "Le code a expiré. Demandez un nouveau code.",
-  "auth/quota-exceeded": "Trop de SMS envoyés aujourd’hui. Connectez-vous avec Google ou l’email.",
-  "auth/popup-closed-by-user": "Connexion Google annulée.",
-  "auth/unauthorized-domain": "Ce site n’est pas encore autorisé dans Firebase (Authentication > Paramètres > Domaines autorisés).",
-  "auth/network-request-failed": "Pas de connexion internet. Vérifiez votre réseau.",
-  "auth/operation-not-allowed": "Ce mode de connexion n’est pas activé dans Firebase."
-};
-const authMsg = e => AUTH_ERR[e?.code] || ("Connexion impossible (" + (e?.code || e?.message || "erreur") + ").");
-
-/* ==========================================================
-   ÉTAT DU COMPTE
-   ========================================================== */
-let user = null;      // utilisateur Firebase
-let profil = null;    // document users/{uid}
-const isAdmin = () => !!user && user.email === CONFIG.adminEmail && user.emailVerified;
-const finAbo = () => profil?.finAbonnement?.toDate?.() || null;
-const isActive = () => isAdmin() || (finAbo() && finAbo() > new Date());
-
-async function chargerProfil(){
-  if (!user) { profil = null; return; }
-  const ref = F.doc(db, "users", user.uid);
-  try{
-    const snap = await F.getDoc(ref);
-    if (!snap.exists()){
-      const data = { nom: user.displayName || "", email: user.email || "", telephone: user.phoneNumber || "", creeLe: F.serverTimestamp() };
-      await F.setDoc(ref, data);
-      profil = { ...data };
-    } else {
-      profil = snap.data();
-      const maj = {};
-      if (user.email && profil.email !== user.email) maj.email = user.email;
-      if (user.phoneNumber && profil.telephone !== user.phoneNumber) maj.telephone = user.phoneNumber;
-      if (user.displayName && !profil.nom) maj.nom = user.displayName;
-      if (Object.keys(maj).length) { await F.updateDoc(ref, maj); Object.assign(profil, maj); }
-    }
-  }catch(e){ console.error(e); profil = profil || {}; }
-}
-
-function nomAffiche(){
-  return profil?.nom || user?.displayName || user?.email || user?.phoneNumber || "Mon compte";
-}
-
-function majInterface(){
-  const btn = $("#acctBtn");
-  btn.textContent = user ? nomAffiche().split(" ")[0].split("@")[0] : "Se connecter";
-  renderQuota();
-  renderCourses();
-  renderStatus();
-}
-
-A.onAuthStateChanged(auth, async u => {
-  user = u;
-  await chargerProfil();
-  majInterface();
-  if (u && $("#loginDlg").open) $("#loginDlg").close();
-  route();
-});
-A.getRedirectResult(auth).catch(e => console.warn(e));
-
-/* ==========================================================
-   CONNEXION
-   ========================================================== */
-$("#acctBtn").addEventListener("click", () => {
-  if (!user) { openDlg("#loginDlg"); return; }
-  $("#acctWho").textContent = [profil?.nom, user.email, user.phoneNumber].filter(Boolean).join(" · ");
-  const fin = finAbo();
-  $("#acctPlan").textContent = isAdmin() ? "Administrateur : accès complet"
-    : (fin && fin > new Date()) ? `Abonnement ${planNom(profil.plan)} actif jusqu’au ${fmtDate(fin)}`
-    : (fin ? `Abonnement terminé le ${fmtDate(fin)}` : "Formule gratuite");
-  $("#adminLink").hidden = !isAdmin();
-  chargerMesPaiements();
-  openDlg("#acctDlg");
-});
-$("#adminLink").addEventListener("click", () => $("#acctDlg").close());
-$("#renewLink").addEventListener("click", () => $("#acctDlg").close());
-$("#logoutBtn").addEventListener("click", async () => { await A.signOut(auth); $("#acctDlg").close(); location.hash = "diagnostic"; });
-
-document.querySelectorAll(".tabs [data-tab]").forEach(t => t.addEventListener("click", () => {
-  document.querySelectorAll(".tabs [data-tab]").forEach(x => x.setAttribute("aria-selected", x === t));
-  document.querySelectorAll("[data-pane]").forEach(p => p.hidden = p.dataset.pane !== t.dataset.tab);
-  show($("#loginMsg"), "");
-}));
-
-$("#googleBtn").addEventListener("click", async () => {
-  show($("#loginMsg"), "");
-  const provider = new A.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
-  try { await A.signInWithPopup(auth, provider); }
-  catch(e){
-    if (e.code === "auth/popup-blocked" || e.code === "auth/operation-not-supported-in-this-environment") {
-      try { await A.signInWithRedirect(auth, provider); } catch(e2){ show($("#loginMsg"), authMsg(e2)); }
-    } else show($("#loginMsg"), authMsg(e));
-  }
-});
-
-let modeCreation = false;
-$("#toggleMode").addEventListener("click", () => {
-  modeCreation = !modeCreation;
-  $("#nameRow").hidden = !modeCreation;
-  $("#emailBtn").textContent = modeCreation ? "Créer mon compte" : "Se connecter";
-  $("#toggleMode").textContent = modeCreation ? "J’ai déjà un compte : me connecter" : "Pas encore de compte ? Créer un compte";
-  $("#pass").autocomplete = modeCreation ? "new-password" : "current-password";
-  show($("#loginMsg"), "");
-});
-$("#emailBtn").addEventListener("click", async () => {
-  const email = $("#email").value.trim(), pass = $("#pass").value;
-  if (!email || !pass) { show($("#loginMsg"), "Écrivez votre email et votre mot de passe."); return; }
-  const b = $("#emailBtn"); b.disabled = true;
-  try{
-    if (modeCreation){
-      const nom = $("#regName").value.trim();
-      if (!nom) { show($("#loginMsg"), "Écrivez votre nom complet."); b.disabled = false; return; }
-      const cred = await A.createUserWithEmailAndPassword(auth, email, pass);
-      await A.updateProfile(cred.user, { displayName: nom });
-      user = cred.user; await chargerProfil();
-      if (profil && !profil.nom) { await F.updateDoc(F.doc(db,"users",user.uid), { nom }); profil.nom = nom; }
-      majInterface();
-    } else {
-      await A.signInWithEmailAndPassword(auth, email, pass);
-    }
-  }catch(e){ show($("#loginMsg"), authMsg(e)); }
-  b.disabled = false;
-});
-$("#forgotBtn").addEventListener("click", async () => {
-  const email = $("#email").value.trim();
-  if (!email) { show($("#loginMsg"), "Écrivez d’abord votre email, puis touchez « Mot de passe oublié »."); return; }
-  try { await A.sendPasswordResetEmail(auth, email); show($("#loginMsg"), "Un email pour changer votre mot de passe vient d’être envoyé. Regardez aussi dans les spams."); }
-  catch(e){ show($("#loginMsg"), authMsg(e)); }
-});
-
-let recaptcha = null, confirmation = null;
-$("#sendCode").addEventListener("click", async () => {
-  const tel = cleanTel($("#tel").value);
-  if (!/^\+\d{8,15}$/.test(tel)) { show($("#loginMsg"), AUTH_ERR["auth/invalid-phone-number"]); return; }
-  const b = $("#sendCode"); b.disabled = true; show($("#loginMsg"), "");
-  try{
-    if (!recaptcha) recaptcha = new A.RecaptchaVerifier(auth, "recaptcha", { size: "invisible" });
-    confirmation = await A.signInWithPhoneNumber(auth, tel, recaptcha);
-    $("#telStep1").hidden = true; $("#telStep2").hidden = false; $("#code").focus();
-  }catch(e){
-    show($("#loginMsg"), authMsg(e));
-    try { recaptcha?.clear(); } catch(_){}
-    recaptcha = null; $("#recaptcha").innerHTML = "";
-  }
-  b.disabled = false;
-});
-$("#checkCode").addEventListener("click", async () => {
-  const code = $("#code").value.trim();
-  if (!confirmation || code.length < 6) { show($("#loginMsg"), "Écrivez les 6 chiffres reçus par SMS."); return; }
-  const b = $("#checkCode"); b.disabled = true;
-  try { await confirmation.confirm(code); $("#telStep1").hidden = false; $("#telStep2").hidden = true; $("#code").value = ""; }
-  catch(e){ show($("#loginMsg"), authMsg(e)); }
-  b.disabled = false;
-});
-$("#telBack").addEventListener("click", () => { $("#telStep1").hidden = false; $("#telStep2").hidden = true; show($("#loginMsg"), ""); });
-
-/* ==========================================================
-   DIAGNOSTIC
-   ========================================================== */
-function usedToday(){ return profil?.diagJour === today() ? (profil.diagNb || 0) : 0; }
-function renderQuota(){
-  const q = $("#quota");
-  if (!user) { q.textContent = "Connectez-vous pour lancer un diagnostic"; return; }
-  if (isActive()) { q.textContent = "Abonné : diagnostics illimités"; return; }
-  const left = Math.max(0, CONFIG.diagnosticsGratuitsParJour - usedToday());
-  q.textContent = `${left} diagnostic${left>1?"s":""} gratuit${left>1?"s":""} restant${left>1?"s":""} aujourd’hui`;
-}
-async function compterDiag(){
-  if (isActive()) return;
-  const n = usedToday() + 1;
-  profil.diagJour = today(); profil.diagNb = n;
-  try { await F.updateDoc(F.doc(db,"users",user.uid), { diagJour: today(), diagNb: n }); } catch(e){ console.warn(e); }
-}
-
-document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
-  const d = $("#desc"); d.value = d.value ? d.value.trim() + " " + b.textContent + "." : b.textContent + "."; d.focus();
-}));
-
-let photo = null; // { data: base64, mime }
-$("#photo").addEventListener("change", async e => {
-  const f = e.target.files[0]; if (!f) return;
-  try{
-    const img = await createImageBitmap(f);
-    const r = Math.min(1, 1280 / Math.max(img.width, img.height));
-    const c = document.createElement("canvas");
-    c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
-    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
-    const url = c.toDataURL("image/jpeg", 0.85);
-    photo = { data: url.split(",")[1], mime: "image/jpeg" };
-    $("#previewImg").src = url;
-  }catch(err){
-    const url = await new Promise(res => { const fr = new FileReader(); fr.onload = () => res(fr.result); fr.readAsDataURL(f); });
-    photo = { data: url.split(",")[1], mime: f.type || "image/jpeg" };
-    $("#previewImg").src = url;
-  }
-  $("#preview").style.display = "flex";
-  $("#dropText").textContent = "Changer la photo";
-});
-$("#removePhoto").addEventListener("click", () => {
-  photo = null; $("#photo").value = ""; $("#preview").style.display = "none";
-  $("#dropText").textContent = "Touchez pour prendre ou choisir une photo";
-});
-
-$("#analyze").addEventListener("click", async () => {
-  const notice = $("#notice"); show(notice, "");
-  if (!user) { openDlg("#loginDlg"); return; }
-  const desc = $("#desc").value.trim();
-  if (!desc && !photo) { show(notice, "Décrivez la panne ou ajoutez une photo pour lancer l’analyse."); return; }
-  if (!isActive() && usedToday() >= CONFIG.diagnosticsGratuitsParJour) {
-    show(notice, "Vos diagnostics gratuits du jour sont utilisés. Passez à l’abonnement Pro pour des diagnostics illimités.");
-    setTimeout(() => location.hash = "abonnements", 1200); return;
-  }
-  const btn = $("#analyze"); btn.disabled = true;
-  $("#result").hidden = false;
-  $("#report").innerHTML = '<div class="thinking"><div class="spin"></div><span>Analyse de la panne en cours… cela peut prendre jusqu’à une minute.</span></div>';
-  $("#result").scrollIntoView({ block:"start" });
-
-  const prompt = `Tu es un réparateur de téléphones mobiles expert qui forme des techniciens en Afrique de l’Ouest (Mali). Réponds en français simple et précis.
-Téléphone : ${$("#brand").value} ${$("#model").value}
-Description du client : ${desc || "(aucune, voir la photo)"}
-${photo ? "Une photo du défaut est jointe : analyse-la attentivement et dis ce que tu y vois." : ""}
-
-Réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, avec exactement ces clés :
-{"panne":"titre court du diagnostic","resume":"2 phrases qui expliquent le problème","causes":["cause la plus probable","..."],"difficulte":"Facile ou Moyen ou Difficile","duree":"ex. 30 à 45 min","outils":["..."],"pieces":["..."],"cout":"estimation en FCFA de la pièce et de la main-d’œuvre au Mali","etapes":[{"titre":"...","detail":"explication précise"}],"precautions":["..."],"si_echec":"que faire si la réparation ne règle pas le problème"}
-Donne 5 à 10 étapes concrètes et dans l’ordre. Si l’information manque, commence par les vérifications qui permettent de trouver la cause.`;
-
-  try{
-    const model = await getModel();
-    const parts = [prompt];
-    if (photo) parts.push({ type: "inlineData", inlineData: { data: photo.data, mimeType: photo.mime } });
-    const res = await model.generateContent(parts);
-    let txt = res.response.text().trim().replace(/^```(?:json)?\s*/i, "").replace(/```$/, "").trim();
-    const r = JSON.parse(txt.slice(txt.indexOf("{"), txt.lastIndexOf("}") + 1));
-    await compterDiag();
-    renderQuota();
-    renderReport(r);
-  }catch(e){
-    console.error(e);
-    $("#result").hidden = true;
-    const m = String(e?.message || "");
-    show(notice, /quota|429|exhausted/i.test(m) ? "Le service d’analyse est très demandé. Réessayez dans une minute."
-      : /api.*not.*enabled|403|PERMISSION/i.test(m) ? "Le service d’analyse n’est pas encore activé dans Firebase (AI Logic)."
-      : "L’analyse a échoué. Vérifiez votre connexion et réessayez.");
-  }finally{ btn.disabled = false; }
-});
-
-const list = a => (a && a.length) ? "<ul>" + a.map(x => "<li>" + esc(x) + "</li>").join("") + "</ul>" : "<p>—</p>";
-function renderReport(r){
-  const d = (r.difficulte || "").toLowerCase();
-  const dc = d.startsWith("fac") ? "d1" : d.startsWith("dif") ? "d3" : "d2";
-  $("#report").innerHTML = `
-    <h2>${esc(r.panne || "Diagnostic")}</h2>
-    <p>${esc(r.resume)}</p>
-    <div class="meta">
-      <span class="tag ${dc}">Difficulté : ${esc(r.difficulte || "—")}</span>
-      <span class="tag">Durée : ${esc(r.duree || "—")}</span>
-      <span class="tag">Coût estimé : ${esc(r.cout || "—")}</span>
-    </div>
-    <div class="cols">
-      <div><h3>Causes probables</h3>${list(r.causes)}</div>
-      <div><h3>Outils</h3>${list(r.outils)}</div>
-      <div><h3>Pièces</h3>${list(r.pieces)}</div>
-    </div>
-    <h3>Méthode de réparation</h3>
-    <ol class="steps">${(r.etapes || []).map(s => `<li><div><strong>${esc(s.titre)}</strong>${esc(s.detail)}</div></li>`).join("")}</ol>
-    ${(r.precautions && r.precautions.length) ? `<div class="warnbox"><h3>Précautions</h3>${list(r.precautions)}</div>` : ""}
-    ${r.si_echec ? `<p style="margin-top:1rem"><strong>Si ça ne marche pas :</strong> ${esc(r.si_echec)}</p>` : ""}
-    <div class="actions"><a class="btn btn-ghost" href="#diagnostic">Analyser une autre panne</a></div>`;
-}
-
-/* ==========================================================
-   COURS
-   ========================================================== */
-const cacheLecons = {};
-function renderCourses(){
-  const actif = isActive();
-  $("#courseList").innerHTML = CATALOGUE.map(c => `
-    <div class="course">
-      <button type="button" aria-expanded="false">
-        <span class="lv">${esc(c.niveau)}</span>
-        <h3>${esc(c.titre)}</h3>
-        <span class="cmeta">${c.lecons.length} leçons</span>
-      </button>
-      <div class="lessons">
-        ${c.lecons.map((l, j) => `<div class="lesson" data-id="${l.id}">
-            <button type="button" aria-expanded="false"><span>${j+1}. ${esc(l.t)}</span><span class="lock">${l.gratuit ? "Gratuit" : (actif ? "" : "Abonnés")}</span></button>
-            <div class="body"></div>
-          </div>`).join("")}
-      </div>
-    </div>`).join("");
-  document.querySelectorAll(".course > button").forEach(b => b.addEventListener("click", () => {
-    const o = b.parentElement.classList.toggle("open"); b.setAttribute("aria-expanded", o);
-  }));
-  document.querySelectorAll(".lesson > button").forEach(b => b.addEventListener("click", () => {
-    const el = b.parentElement, o = el.classList.toggle("open"); b.setAttribute("aria-expanded", o);
-    if (o) ouvrirLecon(el);
-  }));
-}
-function trouverLecon(id){ for (const c of CATALOGUE) for (const l of c.lecons) if (l.id === id) return l; return null; }
-async function ouvrirLecon(el){
-  const id = el.dataset.id, l = trouverLecon(id), body = el.querySelector(".body");
-  if (l.gratuit) { body.innerHTML = l.gratuit; return; }
-  if (!user) { body.innerHTML = `<p>Cette leçon est réservée aux abonnés. <button type="button" class="linkbtn" style="color:var(--copper-ink);padding:0" data-login>Se connecter</button> ou <a href="#abonnements">voir les abonnements</a>.</p>`; body.querySelector("[data-login]").onclick = () => openDlg("#loginDlg"); return; }
-  if (!isActive()) { body.innerHTML = `<p>Cette leçon est réservée aux abonnés Pro et Atelier. <a href="#abonnements">Voir les abonnements</a></p>`; return; }
-  if (cacheLecons[id]) { body.innerHTML = cacheLecons[id]; return; }
-  body.innerHTML = '<div class="thinking"><div class="spin"></div><span>Chargement…</span></div>';
-  try{
-    const s = await F.getDoc(F.doc(db, "lecons", id));
-    const html = s.exists() ? (s.data().contenu || "") : "";
-    cacheLecons[id] = html || "<p>Cette leçon arrive très bientôt.</p>";
-    body.innerHTML = cacheLecons[id];
-  }catch(e){
-    body.innerHTML = /permission/i.test(e.message) ? `<p>Votre abonnement est terminé. <a href="#abonnements">Le renouveler</a></p>` : "<p>Impossible de charger la leçon. Vérifiez votre connexion.</p>";
-  }
-}
-
-/* ==========================================================
-   ABONNEMENTS ET PAIEMENTS
-   ========================================================== */
-const planNom = id => CONFIG.plans.find(p => p.id === id)?.nom || "Pro";
-function renderStatus(){
-  const s = $("#planStatus");
-  if (!user) { s.hidden = true; return; }
-  const fin = finAbo();
-  s.hidden = false;
-  s.innerHTML = isAdmin() ? "<strong>Administrateur</strong> : accès complet"
-    : (fin && fin > new Date()) ? `<strong>Abonnement ${esc(planNom(profil.plan))} actif</strong> jusqu’au ${esc(fmtDate(fin))}`
-    : fin ? `<strong>Votre abonnement est terminé</strong> depuis le ${esc(fmtDate(fin))}. Renouvelez-le pour retrouver l’accès.`
-    : "Vous êtes sur la formule <strong>Gratuite</strong>.";
-}
-$("#plans").innerHTML = CONFIG.plans.map(p => `
-  <div class="plan ${p.badge ? "best" : ""}">
-    ${p.badge ? `<div class="badge">${esc(p.badge)}</div>` : ""}
-    <h3>${esc(p.nom)}</h3>
-    <p class="price">${esc(p.prix)} <small>${esc(p.periode)}</small></p>
-    <ul>${p.avantages.map(a => "<li>" + esc(a) + "</li>").join("")}</ul>
-    <button class="btn ${p.badge ? "btn-copper" : "btn-ghost"}" type="button" data-plan="${p.id}">${esc(p.bouton)}</button>
-  </div>`).join("");
-
-let planChoisi = null;
-document.querySelectorAll("[data-plan]").forEach(b => b.addEventListener("click", () => {
-  const p = CONFIG.plans.find(x => x.id === b.dataset.plan);
-  if (p.id === "gratuit") { if (!user) openDlg("#loginDlg"); else location.hash = "diagnostic"; return; }
-  if (!user) { openDlg("#loginDlg"); show($("#loginMsg"), "Connectez-vous d’abord : l’abonnement sera lié à votre compte."); return; }
-  planChoisi = p;
-  $("#payTitle").textContent = "Abonnement " + p.nom;
-  $("#payPrice").textContent = "Montant : " + p.prix + " " + p.periode;
-  $("#payNum").textContent = CONFIG.telephonePaiement;
-  if (user.phoneNumber) $("#payFrom").value = user.phoneNumber;
-  const msg = encodeURIComponent(`Bonjour, j’ai payé l’abonnement ${p.nom} (${p.prix} ${p.periode}) sur ${CONFIG.nomSite}. Mon compte : ${user.email || user.phoneNumber}.`);
-  $("#payWa").href = "https://wa.me/" + CONFIG.whatsapp + "?text=" + msg;
-  show($("#payMsg"), ""); $("#payMsg").className = "notice";
-  openDlg("#payDlg");
-}));
-
-$("#paySend").addEventListener("click", async () => {
-  const ref = $("#payRef").value.trim(), from = cleanTel($("#payFrom").value), m = $("#payMsg");
-  m.className = "notice";
-  if (from.length < 9) { show(m, "Écrivez le numéro qui a envoyé l’argent."); return; }
-  if (ref.length < 4) { show(m, "Écrivez la référence de la transaction, elle se trouve dans le SMS de confirmation."); return; }
-  const b = $("#paySend"); b.disabled = true;
-  try{
-    await F.addDoc(F.collection(db, "paiements"), {
-      uid: user.uid, nom: nomAffiche(), email: user.email || "", telephone: user.phoneNumber || "",
-      plan: planChoisi.id, montant: planChoisi.prix, operateur: $("#payOp").value,
-      telephonePayeur: from, reference: ref, statut: "en_attente", date: F.serverTimestamp()
-    });
-    m.className = "okmsg";
-    show(m, "Demande envoyée. Votre compte sera activé dès que le paiement est vérifié. Pour aller plus vite, prévenez-nous sur WhatsApp.");
-    $("#payRef").value = "";
-  }catch(e){ console.error(e); show(m, "L’envoi a échoué. Vérifiez votre connexion, ou envoyez la capture sur WhatsApp."); }
-  b.disabled = false;
-});
-
-async function chargerMesPaiements(){
-  const box = $("#acctPays"); box.innerHTML = "";
-  if (!user) return;
-  try{
-    const snap = await F.getDocs(F.query(F.collection(db, "paiements"), F.where("uid", "==", user.uid)));
-    const rows = snap.docs.map(d => d.data()).sort((a,b) => (b.date?.seconds||0) - (a.date?.seconds||0)).slice(0,5);
-    if (!rows.length) return;
-    const lib = { en_attente:"en attente", valide:"validé", refuse:"refusé" };
-    box.innerHTML = `<p class="small" style="margin:0">Mes derniers paiements</p><ul class="pay-list">${rows.map(p =>
-      `<li>${esc(planNom(p.plan))} · ${esc(p.montant)} FCFA · <strong>${esc(lib[p.statut] || p.statut)}</strong>${p.date ? " · " + esc(fmtDate(p.date.toDate())) : ""}</li>`).join("")}</ul>`;
-  }catch(e){ console.warn(e); }
-}
-
-/* ==========================================================
-   ADMINISTRATION
-   ========================================================== */
-async function activer(uid, plan, jours){
-  const ref = F.doc(db, "users", uid);
-  const s = await F.getDoc(ref);
-  const cur = s.data()?.finAbonnement?.toDate?.();
-  const base = cur && cur > new Date() ? cur : new Date();
-  const fin = new Date(base.getTime() + jours * 864e5);
-  await F.updateDoc(ref, { plan, finAbonnement: F.Timestamp.fromDate(fin) });
-  return fin;
-}
-
-async function admPaiements(){
-  const box = $("#admPay");
-  box.innerHTML = '<p class="small">Chargement…</p>';
-  try{
-    const snap = await F.getDocs(F.query(F.collection(db, "paiements"), F.where("statut", "==", "en_attente")));
-    const docs = snap.docs.sort((a,b) => (b.data().date?.seconds||0) - (a.data().date?.seconds||0));
-    if (!docs.length) { box.innerHTML = '<p class="small">Aucun paiement en attente.</p>'; return; }
-    box.innerHTML = docs.map(d => { const p = d.data(); return `
-      <div class="rowitem" data-pid="${d.id}" data-uid="${esc(p.uid)}" data-plan="${esc(p.plan)}">
-        <div class="who">${esc(p.nom || "Client")} <span class="small">${esc(p.email || p.telephone || "")}</span></div>
-        <div class="small">${esc(planNom(p.plan))} · ${esc(p.montant)} FCFA · ${esc(p.operateur)} depuis ${esc(p.telephonePayeur)}<br>Référence : <strong>${esc(p.reference)}</strong>${p.date ? " · " + esc(p.date.toDate().toLocaleString("fr-FR")) : ""}</div>
-        <div class="btns"><button class="btn btn-copper btn-sm" data-act="ok" type="button">Valider et activer</button><button class="btn btn-ghost btn-sm" data-act="no" type="button">Refuser</button></div>
-      </div>`; }).join("");
-    box.querySelectorAll("[data-act]").forEach(b => b.addEventListener("click", async () => {
-      const row = b.closest(".rowitem"); b.disabled = true;
-      try{
-        if (b.dataset.act === "ok"){
-          const plan = CONFIG.plans.find(x => x.id === row.dataset.plan) || CONFIG.plans[1];
-          const fin = await activer(row.dataset.uid, plan.id, plan.jours);
-          await F.updateDoc(F.doc(db, "paiements", row.dataset.pid), { statut: "valide", traiteLe: F.serverTimestamp(), finAbonnement: F.Timestamp.fromDate(fin) });
-          row.innerHTML = `<p class="okmsg" style="margin:0">Validé. Abonnement actif jusqu’au ${esc(fmtDate(fin))}.</p>`;
-        } else {
-          await F.updateDoc(F.doc(db, "paiements", row.dataset.pid), { statut: "refuse", traiteLe: F.serverTimestamp() });
-          row.innerHTML = `<p class="small" style="margin:0">Paiement refusé.</p>`;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>LibreSoudure – Formation gratuite en micro-soudure</title>
+  <meta name="description" content="Plateforme 100% gratuite pour apprendre la micro-soudure et la réparation électronique." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c',
+              800: '#9a3412'
+            }
+          },
+          boxShadow: {
+            soft: '0 4px 20px -2px rgba(249, 115, 22, 0.12), 0 2px 8px -2px rgba(0,0,0,0.04)',
+            card: '0 8px 30px -4px rgba(249, 115, 22, 0.15), 0 4px 12px -2px rgba(0,0,0,0.05)'
+          }
         }
-      }catch(e){ console.error(e); b.disabled = false; alertRow(row, e); }
-    }));
-  }catch(e){ console.error(e); box.innerHTML = `<p class="notice">Impossible de charger les paiements : ${esc(e.message)}</p>`; }
-}
-function alertRow(row, e){ const p = document.createElement("p"); p.className = "notice"; p.textContent = "Erreur : " + (e.message || e); row.appendChild(p); }
-
-async function admClients(term){
-  const box = $("#admUsers");
-  box.innerHTML = '<p class="small">Chargement…</p>';
-  try{
-    let docs;
-    if (term){
-      const t = term.includes("@") ? term.trim().toLowerCase() : cleanTel(term);
-      const field = term.includes("@") ? "email" : "telephone";
-      docs = (await F.getDocs(F.query(F.collection(db, "users"), F.where(field, "==", t)))).docs;
-    } else {
-      docs = (await F.getDocs(F.query(F.collection(db, "users"), F.orderBy("creeLe", "desc"), F.limit(30)))).docs;
+      }
     }
-    if (!docs.length) { box.innerHTML = '<p class="small">Aucun client trouvé. Pour un email, écrivez-le exactement comme le client l’a utilisé.</p>'; return; }
-    box.innerHTML = docs.map(d => { const u = d.data(); const fin = u.finAbonnement?.toDate?.(); const actif = fin && fin > new Date(); return `
-      <div class="rowitem" data-uid="${d.id}">
-        <div class="who">${esc(u.nom || "Sans nom")} <span class="small">${esc([u.email, u.telephone].filter(Boolean).join(" · "))}</span></div>
-        <div class="small">${actif ? `${esc(planNom(u.plan))} actif jusqu’au ${esc(fmtDate(fin))}` : (fin ? `Terminé le ${esc(fmtDate(fin))}` : "Gratuit")}</div>
-        <div class="btns">
-          <button class="btn btn-copper btn-sm" data-u="pro" type="button">+1 mois Pro</button>
-          <button class="btn btn-ghost btn-sm" data-u="atelier" type="button">+1 an Atelier</button>
-          <button class="btn btn-ghost btn-sm" data-u="stop" type="button">Arrêter</button>
+  </script>
+  <style>
+    * { -webkit-tap-highlight-color: transparent; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(165deg, #fff7ed 0%, #ffedd5 40%, #fff 100%);
+      min-height: 100dvh;
+    }
+    .view { display: none; }
+    .view.active { display: block; animation: fadeIn 0.25s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+    
+    .icon-3d {
+      background: linear-gradient(145deg, #fff 0%, #fff7ed 100%);
+      box-shadow: 
+        0 4px 12px rgba(249, 115, 22, 0.15),
+        inset 0 1px 0 rgba(255,255,255,0.8),
+        inset 0 -2px 4px rgba(249, 115, 22, 0.08);
+    }
+    .icon-3d-orange {
+      background: linear-gradient(145deg, #fb923c 0%, #ea580c 100%);
+      box-shadow: 
+        0 6px 16px rgba(234, 88, 12, 0.35),
+        inset 0 1px 0 rgba(255,255,255,0.3),
+        inset 0 -2px 4px rgba(0,0,0,0.1);
+    }
+    .card-soft {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px -2px rgba(249, 115, 22, 0.08), 0 2px 8px -2px rgba(0,0,0,0.03);
+      border: 1px solid rgba(249, 115, 22, 0.06);
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+      box-shadow: 0 6px 20px rgba(234, 88, 12, 0.35);
+    }
+    .btn-primary:active { transform: scale(0.97); }
+    .progress-bar { transition: width 0.45s cubic-bezier(0.4, 0, 0.2, 1); }
+    .bottom-nav {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.06);
+    }
+    .nav-item.active { color: #ea580c; }
+    .nav-item.active .nav-icon {
+      background: linear-gradient(145deg, #fb923c, #ea580c);
+      color: white;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.4);
+    }
+    .chip {
+      transition: all 0.2s;
+      border-radius: 999px;
+    }
+    .chip.active {
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+      color: white;
+      box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+    }
+  </style>
+</head>
+<body class="text-slate-800 pb-28">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-orange-100/50">
+    <div class="max-w-lg mx-auto px-4 h-14 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl icon-3d-orange flex items-center justify-center text-white font-bold text-sm tracking-tight">
+          LS
         </div>
-      </div>`; }).join("");
-    box.querySelectorAll("[data-u]").forEach(b => b.addEventListener("click", async () => {
-      const row = b.closest(".rowitem"); b.disabled = true;
-      try{
-        if (b.dataset.u === "stop") await F.updateDoc(F.doc(db, "users", row.dataset.uid), { plan: "gratuit", finAbonnement: F.Timestamp.fromDate(new Date()) });
-        else { const p = CONFIG.plans.find(x => x.id === b.dataset.u); await activer(row.dataset.uid, p.id, p.jours); }
-        admClients(term);
-      }catch(e){ console.error(e); b.disabled = false; alertRow(row, e); }
-    }));
-  }catch(e){ console.error(e); box.innerHTML = `<p class="notice">Impossible de charger les clients : ${esc(e.message)}</p>`; }
-}
+        <div>
+          <div class="font-bold text-[15px] leading-tight text-slate-800">LibreSoudure</div>
+          <div class="text-[10px] font-medium text-orange-500">Formation ouverte</div>
+        </div>
+      </div>
+      <button onclick="showView('profil')" class="w-9 h-9 rounded-full icon-3d flex items-center justify-center text-slate-500">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+      </button>
+    </div>
+  </header>
 
-function admLecons(){
-  const sel = $("#admLesson");
-  sel.innerHTML = CATALOGUE.flatMap(c => c.lecons.filter(l => !l.gratuit).map(l => `<option value="${l.id}">${esc(c.titre)} – ${esc(l.t)}</option>`)).join("");
-  chargerLeconAdmin();
-}
-async function chargerLeconAdmin(){
-  $("#admContent").value = "Chargement…"; $("#admLessonMsg").textContent = "";
-  try { const s = await F.getDoc(F.doc(db, "lecons", $("#admLesson").value)); $("#admContent").value = s.exists() ? (s.data().contenu || "") : ""; }
-  catch(e){ $("#admContent").value = ""; $("#admLessonMsg").textContent = "Erreur : " + e.message; }
-}
-$("#admLesson").addEventListener("change", chargerLeconAdmin);
-$("#admSaveLesson").addEventListener("click", async () => {
-  const id = $("#admLesson").value, l = trouverLecon(id);
-  try { await F.setDoc(F.doc(db, "lecons", id), { titre: l.t, contenu: $("#admContent").value, maj: F.serverTimestamp() }); delete cacheLecons[id]; $("#admLessonMsg").textContent = "Leçon enregistrée."; }
-  catch(e){ $("#admLessonMsg").textContent = "Erreur : " + e.message; }
-});
-$("#admImportBtn").addEventListener("click", async () => {
-  const msg = $("#admImportMsg");
-  let data;
-  try { data = JSON.parse($("#admImport").value); } catch(e){ msg.textContent = "Le texte collé n’est pas un JSON valide."; return; }
-  const batch = F.writeBatch(db); let n = 0;
-  for (const [id, contenu] of Object.entries(data)){
-    const l = trouverLecon(id); if (!l) continue;
-    batch.set(F.doc(db, "lecons", id), { titre: l.t, contenu: String(contenu), maj: F.serverTimestamp() }); n++;
-  }
-  if (!n) { msg.textContent = "Aucune leçon reconnue dans le texte collé."; return; }
-  try { await batch.commit(); msg.textContent = `${n} leçon${n>1?"s":""} importée${n>1?"s":""}.`; $("#admImport").value = ""; Object.keys(cacheLecons).forEach(k => delete cacheLecons[k]); chargerLeconAdmin(); }
-  catch(e){ msg.textContent = "Erreur : " + e.message; }
-});
-$("#admPayRefresh").addEventListener("click", admPaiements);
-$("#admSearchBtn").addEventListener("click", () => admClients($("#admSearch").value.trim()));
-$("#admSearch").addEventListener("keydown", e => { if (e.key === "Enter") admClients($("#admSearch").value.trim()); });
+  <main class="max-w-lg mx-auto px-4 pt-5">
 
-/* ==========================================================
-   NAVIGATION
-   ========================================================== */
-let adminCharge = false;
-function route(){
-  const admin = location.hash === "#admin" && isAdmin();
-  $("#site").hidden = admin; $("#admin").hidden = !admin;
-  if (admin && !adminCharge) { adminCharge = true; admPaiements(); admClients(""); admLecons(); }
-  if (admin) window.scrollTo(0, 0);
-}
-window.addEventListener("hashchange", route);
-renderCourses();
-</script>
+    <!-- ===== ACCUEIL ===== -->
+    <section id="view-accueil" class="view active">
+      <div class="mb-5">
+        <h1 class="text-2xl font-bold text-slate-800 tracking-tight">Bonjour !</h1>
+        <p class="text-slate-500 text-sm mt-1">Que souhaitez-vous apprendre aujourd’hui ?</p>
+      </div>
+
+      <!-- Feature grid (style MOZWIKO) -->
+      <div class="grid grid-cols-3 gap-3 mb-6">
+        <button onclick="showView('lecons')" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">📘</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Leçons</span>
+        </button>
+        <button onclick="showView('quiz')" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">🧠</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Quiz</span>
+        </button>
+        <button onclick="showView('progres')" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">📊</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Progrès</span>
+        </button>
+        <button onclick="showView('certificat')" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">🎓</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Certificat</span>
+        </button>
+        <button onclick="openNextLesson()" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">🔧</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Continuer</span>
+        </button>
+        <button onclick="showView('profil')" class="card-soft p-4 flex flex-col items-center gap-2.5 active:scale-95 transition">
+          <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-2xl">⚙️</div>
+          <span class="text-[12px] font-semibold text-slate-700 text-center leading-tight">Réglages</span>
+        </button>
+      </div>
+
+      <!-- Banner -->
+      <div class="relative overflow-hidden rounded-3xl mb-6 p-5 text-white"
+           style="background: linear-gradient(135deg, #fb923c 0%, #ea580c 50%, #c2410c 100%); box-shadow: 0 12px 30px rgba(234,88,12,0.3);">
+        <div class="relative z-10">
+          <div class="text-xs font-semibold opacity-90 mb-1 tracking-wide">FORMATION COMPLÈTE</div>
+          <h2 class="text-xl font-bold leading-tight">Micro-soudure<br>& Électronique</h2>
+          <p class="text-sm opacity-90 mt-2">12 leçons • 100 % gratuit</p>
+        </div>
+        <div class="absolute -right-4 -bottom-6 text-[90px] font-black opacity-15 select-none leading-none">LS</div>
+      </div>
+
+      <!-- Continue card -->
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="font-bold text-slate-800">Continuer</h3>
+        <button onclick="showView('lecons')" class="text-xs font-semibold text-orange-600">Tout voir →</button>
+      </div>
+      <div id="continueCard" class="card-soft p-4 flex items-center gap-3.5 cursor-pointer active:scale-[0.98] transition mb-6" onclick="openNextLesson()">
+        <div class="w-14 h-14 rounded-2xl icon-3d flex items-center justify-center text-2xl shrink-0">🔧</div>
+        <div class="flex-1 min-w-0">
+          <div id="nextLessonTitle" class="font-semibold text-sm text-slate-800 truncate">Chargement…</div>
+          <div class="text-xs text-slate-500 mt-0.5">Prochaine leçon</div>
+          <div class="mt-2 h-1.5 bg-orange-100 rounded-full overflow-hidden">
+            <div id="nextLessonProgress" class="h-full bg-gradient-to-r from-orange-400 to-orange-600 progress-bar rounded-full" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="w-11 h-11 rounded-full icon-3d-orange flex items-center justify-center text-white shrink-0">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+
+      <!-- Modules -->
+      <h3 class="font-bold text-slate-800 mb-3">Modules</h3>
+      <div id="categoriesPreview" class="space-y-3"></div>
+    </section>
+
+    <!-- ===== LEÇONS ===== -->
+    <section id="view-lecons" class="view">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showView('accueil')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">Leçons</h1>
+      </div>
+
+      <div class="flex gap-2 overflow-x-auto pb-3 mb-4 -mx-1 px-1">
+        <button class="chip active px-4 py-2 text-sm font-semibold whitespace-nowrap" data-filter="all" onclick="setFilter(this)">Toutes</button>
+        <button class="chip px-4 py-2 text-sm font-semibold bg-white text-slate-600 whitespace-nowrap shadow-sm" data-filter="debutant" onclick="setFilter(this)">Débutant</button>
+        <button class="chip px-4 py-2 text-sm font-semibold bg-white text-slate-600 whitespace-nowrap shadow-sm" data-filter="intermediaire" onclick="setFilter(this)">Intermédiaire</button>
+        <button class="chip px-4 py-2 text-sm font-semibold bg-white text-slate-600 whitespace-nowrap shadow-sm" data-filter="avance" onclick="setFilter(this)">Avancé</button>
+      </div>
+
+      <div id="lessonsList" class="space-y-3"></div>
+    </section>
+
+    <!-- ===== LEÇON DETAIL ===== -->
+    <section id="view-lesson" class="view">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showView('lecons')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <div class="flex-1 min-w-0">
+          <div id="lessonLevel" class="text-xs font-semibold text-orange-600"></div>
+          <h1 id="lessonTitle" class="text-lg font-bold text-slate-800 truncate"></h1>
+        </div>
+      </div>
+
+      <div class="card-soft p-5 mb-5">
+        <div id="lessonContent" class="prose prose-sm max-w-none text-slate-700 leading-relaxed"></div>
+      </div>
+
+      <div class="flex gap-3">
+        <button id="btnPrevLesson" onclick="navigateLesson(-1)" class="flex-1 py-3.5 rounded-2xl bg-white border border-orange-100 font-semibold text-sm text-slate-700 shadow-sm">← Préc.</button>
+        <button id="btnComplete" onclick="markComplete()" class="flex-[1.4] py-3.5 rounded-2xl btn-primary text-white font-semibold text-sm">Marquer ✓</button>
+        <button id="btnNextLesson" onclick="navigateLesson(1)" class="flex-1 py-3.5 rounded-2xl bg-white border border-orange-100 font-semibold text-sm text-slate-700 shadow-sm">Suiv. →</button>
+      </div>
+    </section>
+
+    <!-- ===== QUIZ ===== -->
+    <section id="view-quiz" class="view">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showView('accueil')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">Quiz</h1>
+      </div>
+
+      <div id="quizStart" class="text-center py-10">
+        <div class="w-20 h-20 mx-auto mb-5 rounded-3xl icon-3d flex items-center justify-center text-4xl">🧠</div>
+        <h2 class="text-lg font-bold text-slate-800 mb-2">Tester tes connaissances</h2>
+        <p class="text-sm text-slate-500 mb-8 max-w-xs mx-auto">10 questions • Score minimum 70 % pour valider le certificat</p>
+        <button onclick="startQuiz()" class="px-10 py-3.5 rounded-2xl btn-primary text-white font-semibold text-sm">Commencer le quiz</button>
+      </div>
+
+      <div id="quizArea" class="hidden">
+        <div class="mb-4 flex items-center justify-between text-sm font-medium">
+          <span id="quizProgress" class="text-slate-600">Question 1/10</span>
+          <span id="quizScore" class="text-orange-600">Score : 0</span>
+        </div>
+        <div class="card-soft p-5 mb-4">
+          <h3 id="quizQuestion" class="font-semibold text-slate-800 mb-4 text-[15px]"></h3>
+          <div id="quizOptions" class="space-y-2.5"></div>
+        </div>
+        <button id="quizNextBtn" onclick="nextQuestion()" class="w-full py-3.5 rounded-2xl btn-primary text-white font-semibold text-sm hidden">Question suivante</button>
+      </div>
+
+      <div id="quizResult" class="hidden text-center py-10">
+        <div id="quizResultIcon" class="text-5xl mb-4"></div>
+        <h2 id="quizResultTitle" class="text-xl font-bold text-slate-800 mb-2"></h2>
+        <p id="quizResultText" class="text-slate-500 mb-8 text-sm max-w-xs mx-auto"></p>
+        <button onclick="resetQuiz()" class="px-8 py-3.5 rounded-2xl btn-primary text-white font-semibold text-sm">Recommencer</button>
+      </div>
+    </section>
+
+    <!-- ===== PROGRÈS ===== -->
+    <section id="view-progres" class="view">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showView('accueil')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">Ma progression</h1>
+      </div>
+
+      <div class="card-soft p-5 mb-5">
+        <div class="flex items-end justify-between mb-3">
+          <div>
+            <div class="text-4xl font-bold text-orange-600" id="progressPercent">0%</div>
+            <div class="text-sm text-slate-500 mt-0.5">de la formation</div>
+          </div>
+          <div class="text-right text-sm font-medium text-slate-600" id="progressCount">0 / 0 leçons</div>
+        </div>
+        <div class="h-3 bg-orange-100 rounded-full overflow-hidden">
+          <div id="progressBar" class="h-full bg-gradient-to-r from-orange-400 to-orange-600 progress-bar rounded-full" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div id="moduleProgress" class="space-y-3"></div>
+    </section>
+
+    <!-- ===== CERTIFICAT ===== -->
+    <section id="view-certificat" class="view">
+      <div class="flex items-center gap-3 mb-5">
+        <button onclick="showView('accueil')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">Certificat</h1>
+      </div>
+
+      <div id="certLocked" class="text-center py-12">
+        <div class="w-20 h-20 mx-auto mb-5 rounded-3xl icon-3d flex items-center justify-center text-4xl">🔒</div>
+        <h2 class="text-lg font-bold text-slate-800 mb-2">Certificat verrouillé</h2>
+        <p class="text-sm text-slate-500 mb-5 max-w-xs mx-auto">Termine au moins 80 % des leçons et valide le quiz pour le débloquer.</p>
+        <div class="inline-block px-4 py-2 rounded-full bg-orange-50 text-orange-700 text-sm font-semibold" id="certRequirement">Progression : 0 %</div>
+      </div>
+
+      <div id="certUnlocked" class="hidden">
+        <div class="rounded-3xl p-6 text-center mb-5 border-2 border-orange-200"
+             style="background: linear-gradient(160deg, #fff7ed 0%, #ffedd5 100%);">
+          <div class="text-4xl mb-3">🎓</div>
+          <div class="text-[11px] uppercase tracking-widest text-orange-700 font-bold mb-1">Certificat de réussite</div>
+          <h2 class="text-xl font-bold text-slate-800 mb-1">LibreSoudure</h2>
+          <p class="text-sm text-slate-600 mb-5">Formation en micro-soudure & électronique</p>
+          <div class="border-t border-orange-200 pt-4">
+            <p class="text-sm text-slate-500">Décerné à</p>
+            <p id="certName" class="text-lg font-bold text-orange-700 my-1">Apprenant</p>
+            <p class="text-xs text-slate-400" id="certDate"></p>
+          </div>
+        </div>
+        <button onclick="downloadCertificate()" class="w-full py-3.5 rounded-2xl btn-primary text-white font-semibold text-sm mb-2">Télécharger le certificat</button>
+        <p class="text-xs text-center text-slate-400">Généré localement • Aucune donnée envoyée</p>
+      </div>
+    </section>
+
+    <!-- ===== PROFIL ===== -->
+    <section id="view-profil" class="view">
+      <div class="flex items-center gap-3 mb-6">
+        <button onclick="showView('accueil')" class="w-10 h-10 rounded-full icon-3d flex items-center justify-center text-slate-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <h1 class="text-xl font-bold text-slate-800">Profil</h1>
+      </div>
+
+      <div class="card-soft p-5 mb-4">
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Ton prénom / pseudo</label>
+        <input id="userName" type="text" placeholder="Ex: Alex" 
+               class="w-full px-4 py-3 rounded-xl border border-orange-100 bg-orange-50/50 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400"
+               onchange="saveName(this.value)" />
+        <p class="text-xs text-slate-400 mt-2">Utilisé uniquement pour le certificat (stocké en local).</p>
+      </div>
+
+      <div class="card-soft p-5 mb-4">
+        <h3 class="font-semibold text-slate-800 mb-3">Données</h3>
+        <button onclick="resetProgress()" class="w-full py-3 rounded-xl border border-red-200 text-red-600 text-sm font-semibold bg-red-50">Réinitialiser la progression</button>
+      </div>
+
+      <div class="text-center text-xs text-slate-400 mt-10">
+        <p class="font-medium">LibreSoudure – Formation ouverte et gratuite</p>
+        <p class="mt-1">Aucune inscription requise</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- BOTTOM NAV -->
+  <nav class="fixed bottom-0 left-0 right-0 bottom-nav z-50 safe-bottom">
+    <div class="max-w-lg mx-auto grid grid-cols-4 h-[68px] px-2">
+      <button onclick="showView('accueil')" data-nav="accueil" class="nav-item active flex flex-col items-center justify-center gap-1">
+        <div class="nav-icon w-10 h-10 rounded-2xl flex items-center justify-center transition-all">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold">Accueil</span>
+      </button>
+      <button onclick="showView('lecons')" data-nav="lecons" class="nav-item flex flex-col items-center justify-center gap-1 text-slate-400">
+        <div class="nav-icon w-10 h-10 rounded-2xl flex items-center justify-center transition-all bg-transparent">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold">Leçons</span>
+      </button>
+      <button onclick="showView('quiz')" data-nav="quiz" class="nav-item flex flex-col items-center justify-center gap-1 text-slate-400">
+        <div class="nav-icon w-10 h-10 rounded-2xl flex items-center justify-center transition-all bg-transparent">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold">Quiz</span>
+      </button>
+      <button onclick="showView('profil')" data-nav="profil" class="nav-item flex flex-col items-center justify-center gap-1 text-slate-400">
+        <div class="nav-icon w-10 h-10 rounded-2xl flex items-center justify-center transition-all bg-transparent">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <span class="text-[10px] font-semibold">Profil</span>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // ========== DATA (inchangé) ==========
+    const MODULES = [
+      {
+        id: "bases",
+        title: "Bases de l’électronique",
+        icon: "⚡",
+        level: "debutant",
+        lessons: [
+          { id: "b1", title: "Tension, courant et résistance", content: "<p>La tension (en volts) est la « force » qui pousse les électrons. Le courant (en ampères) est le débit de ces électrons. La résistance (en ohms) s’oppose au passage du courant.</p><p>Ces trois grandeurs sont liées par la loi d’Ohm : <strong>U = R × I</strong>.</p><p>Comprendre cette relation est fondamental pour diagnostiquer une carte électronique.</p>" },
+          { id: "b2", title: "Identifier les composants CMS", content: "<p>Les composants CMS (Composants Montés en Surface) sont très petits et collés directement sur le cuivre de la carte.</p><ul><li>Résistances : souvent marquées avec un code 3 ou 4 chiffres</li><li>Condensateurs céramiques : généralement sans marquage</li><li>Diodes et LED : polarité importante</li><li>Circuits intégrés : repère de pin 1</li></ul><p>Apprendre à les reconnaître à l’œil et au multimètre est une compétence essentielle.</p>" },
+          { id: "b3", title: "Sécurité et précautions ESD", content: "<p>Les décharges électrostatiques (ESD) peuvent détruire des composants sensibles sans que l’on s’en rende compte.</p><p>Bonnes pratiques :</p><ul><li>Bracelet antistatique relié à la terre</li><li>Tapis de travail ESD</li><li>Éviter les vêtements synthétiques</li><li>Toujours décharger les condensateurs avant intervention</li></ul>" }
+        ]
+      },
+      {
+        id: "outils",
+        title: "Outils de micro-soudure",
+        icon: "🔧",
+        level: "debutant",
+        lessons: [
+          { id: "o1", title: "Le fer à souder et ses pannes", content: "<p>Un bon fer à température régulée (idéalement 300-380 °C selon l’alliage) est indispensable.</p><p>Les pannes les plus utiles en micro-soudure :</p><ul><li>Panne fine (conique ou biseau fin) pour les CMS</li><li>Panne en forme de hachette pour les gros pads</li><li>Panne en forme de fer de lance pour les zones denses</li></ul><p>Entretenir la panne (étamage régulier) prolonge fortement sa durée de vie.</p>" },
+          { id: "o2", title: "Station à air chaud", content: "<p>La station à air chaud permet de chauffer une zone entière sans contact. Elle est idéale pour retirer des composants CMS à plusieurs pads (QFN, BGA, etc.).</p><p>Règles de base :</p><ul><li>Débit d’air modéré pour ne pas faire voler les composants</li><li>Température adaptée (généralement 300-400 °C)</li><li>Mouvements circulaires pour répartir la chaleur</li></ul>" },
+          { id: "o3", title: "Flux, étain et accessoires", content: "<p>Le flux facilite l’écoulement de l’étain et empêche l’oxydation pendant le chauffage.</p><p>Types courants :</p><ul><li>Flux en gel (seringue) : très précis</li><li>Flux liquide : pour nettoyage et reprise</li><li>Alliage 63/37 ou sans plomb selon la norme</li></ul><p>Autres outils indispensables : tresse à dessouder, pompe, pince brucelle, microscope ou loupe.</p>" }
+        ]
+      },
+      {
+        id: "pratiques",
+        title: "Techniques de base",
+        icon: "🛠️",
+        level: "intermediaire",
+        lessons: [
+          { id: "p1", title: "Soudure d’un composant CMS", content: "<p>Méthode classique en 4 étapes :</p><ol><li>Déposer un peu d’étain sur un pad</li><li>Positionner le composant avec la brucelle</li><li>Chauffer le pad déjà étamé pour coller le composant</li><li>Souder le(s) autre(s) côté(s) en apportant de l’étain</li></ol><p>Toujours vérifier l’absence de ponts d’étain après coup.</p>" },
+          { id: "p2", title: "Dessoudage propre", content: "<p>Pour un composant à 2 pads : chauffer un côté puis l’autre rapidement, ou utiliser de la tresse.</p><p>Pour un QFN ou BGA : air chaud + flux, puis retirer délicatement une fois l’alliage fondu.</p><p>Nettoyer ensuite les pads avec de la tresse et du flux pour retrouver une surface plane.</p>" },
+          { id: "p3", title: "Reprise de piste et jumper", content: "<p>Quand une piste est sectionnée ou une pastille arrachée, on peut réaliser un « jumper » (pont filaire).</p><p>Techniques courantes :</p><ul><li>Fil émaillé très fin (0.1 mm) pour les signaux</li><li>Fil de cuivre dénudé pour les pistes d’alimentation</li><li>Collage ou vernis de protection après réparation</li></ul>" }
+        ]
+      },
+      {
+        id: "diag",
+        title: "Diagnostic",
+        icon: "🔍",
+        level: "avance",
+        lessons: [
+          { id: "d1", title: "Utiliser le multimètre intelligemment", content: "<p>Modes essentiels en réparation :</p><ul><li>Continuité (bip) : vérifier les pistes et fusibles</li><li>Résistance : mesurer des composants hors circuit de préférence</li><li>Diode : tester semi-conducteurs</li><li>Tension DC : vérifier les alimentations sur carte</li></ul><p>Toujours commencer par les tensions d’alimentation et les rails principaux.</p>" },
+          { id: "d2", title: "Localiser un court-circuit", content: "<p>Méthodes classiques :</p><ul><li>Mesure de résistance entre VCC et GND (très basse = court-circuit)</li><li>Injection de courant faible + caméra thermique ou doigt (zone chaude)</li><li>Méthode de la tension de diode pour isoler des zones</li></ul><p>La patience et la méthode systématique battent l’intuition pure.</p>" },
+          { id: "d3", title: "Lire un schéma simplifié", content: "<p>Un schéma électronique montre les connexions logiques entre composants.</p><p>Points importants à repérer :</p><ul><li>Les rails d’alimentation (VCC, VBAT, GND…)</li><li>Les lignes de données (I2C, SPI, USB…)</li><li>Les composants de protection (fusibles, TVS, varistances)</li></ul><p>Même un schéma partiel aide énormément au diagnostic.</p>" }
+        ]
+      }
+    ];
+
+    const ALL_LESSONS = [];
+    MODULES.forEach(m => {
+      m.lessons.forEach(l => {
+        ALL_LESSONS.push({ ...l, moduleId: m.id, moduleTitle: m.title, level: m.level, icon: m.icon });
+      });
+    });
+
+    const QUIZ = [
+      { q: "Quelle est la formule de la loi d’Ohm ?", options: ["U = R × I", "P = U × I", "R = U + I", "I = U × R"], correct: 0 },
+      { q: "Que signifie CMS ?", options: ["Composant Monté en Surface", "Circuit Micro Soudé", "Composant Multi-Sortie", "Connecteur Miniature Standard"], correct: 0 },
+      { q: "Pourquoi utilise-t-on un bracelet antistatique ?", options: ["Pour se protéger des chocs électriques", "Pour éviter les décharges ESD qui détruisent les composants", "Pour mieux tenir le fer", "Pour mesurer la tension"], correct: 1 },
+      { q: "Quel outil est le plus adapté pour retirer un QFN ?", options: ["Fer à souder simple", "Station à air chaud", "Pompe à dessouder uniquement", "Tournevis"], correct: 1 },
+      { q: "À quoi sert le flux ?", options: ["À coller les composants", "À faciliter l’écoulement de l’étain et limiter l’oxydation", "À nettoyer uniquement après soudure", "À mesurer la température"], correct: 1 },
+      { q: "Quelle est une bonne plage de température pour un fer en micro-soudure (alliage classique) ?", options: ["150-200 °C", "300-380 °C", "450-500 °C", "100 °C"], correct: 1 },
+      { q: "Que faire en premier face à un court-circuit suspect ?", options: ["Changer tous les composants", "Mesurer la résistance entre alimentation et masse", "Souder un fil de contournement", "Augmenter la tension"], correct: 1 },
+      { q: "Un pont d’étain est :", options: ["Une bonne pratique de renforcement", "Un défaut qui relie deux pads qui ne doivent pas l’être", "Un type de panne", "Un alliage spécial"], correct: 1 },
+      { q: "Le mode « diode » du multimètre sert principalement à :", options: ["Mesurer la capacité", "Tester les semi-conducteurs et certaines continuités", "Mesurer la puissance", "Régler le fer"], correct: 1 },
+      { q: "Un jumper en réparation est :", options: ["Un composant de protection", "Un pont filaire qui remplace une piste coupée", "Un type de flux", "Une panne spéciale"], correct: 1 }
+    ];
+
+    // ========== STATE ==========
+    let currentView = 'accueil';
+    let currentLessonIndex = 0;
+    let currentFilter = 'all';
+    let progress = JSON.parse(localStorage.getItem('ls_progress') || '{}');
+    let userName = localStorage.getItem('ls_name') || '';
+    let quizState = { index: 0, score: 0, answers: [] };
+
+    // ========== UI ==========
+    function showView(name) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      const el = document.getElementById('view-' + name);
+      if (el) el.classList.add('active');
+      currentView = name;
+
+      // Nav highlighting
+      document.querySelectorAll('.nav-item').forEach(btn => {
+        btn.classList.remove('active', 'text-orange-600');
+        btn.classList.add('text-slate-400');
+        const icon = btn.querySelector('.nav-icon');
+        if (icon) {
+          icon.classList.remove('bg-gradient-to-br', 'from-orange-400', 'to-orange-600', 'text-white');
+          icon.style.background = '';
+          icon.style.color = '';
+          icon.style.boxShadow = '';
+        }
+      });
+      const activeBtn = document.querySelector(`.nav-item[data-nav="${name}"]`);
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+        activeBtn.classList.remove('text-slate-400');
+        const icon = activeBtn.querySelector('.nav-icon');
+        if (icon) {
+          icon.style.background = 'linear-gradient(145deg, #fb923c, #ea580c)';
+          icon.style.color = 'white';
+          icon.style.boxShadow = '0 4px 12px rgba(234, 88, 12, 0.4)';
+        }
+      }
+
+      if (name === 'lecons') renderLessons();
+      if (name === 'progres') renderProgress();
+      if (name === 'certificat') renderCert();
+      if (name === 'accueil') renderHome();
+      if (name === 'profil') document.getElementById('userName').value = userName;
+      window.scrollTo(0, 0);
+    }
+
+    function renderHome() {
+      const catEl = document.getElementById('categoriesPreview');
+      catEl.innerHTML = MODULES.map(m => {
+        const done = m.lessons.filter(l => progress[l.id]).length;
+        const pct = Math.round((done / m.lessons.length) * 100);
+        return `
+          <div class="card-soft p-4 flex items-center gap-3.5 cursor-pointer active:scale-[0.98] transition" onclick="showView('lecons'); setFilterByLevel('${m.level}')">
+            <div class="w-14 h-14 rounded-2xl icon-3d flex items-center justify-center text-2xl shrink-0">${m.icon}</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-slate-800">${m.title}</div>
+              <div class="text-xs text-slate-500 mt-0.5">${m.lessons.length} leçons · ${pct}%</div>
+              <div class="mt-2 h-1.5 bg-orange-100 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full" style="width:${pct}%"></div>
+              </div>
+            </div>
+            <svg class="w-5 h-5 text-orange-300 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </div>`;
+      }).join('');
+
+      const next = ALL_LESSONS.find(l => !progress[l.id]) || ALL_LESSONS[0];
+      const doneCount = Object.keys(progress).length;
+      const pct = Math.round((doneCount / ALL_LESSONS.length) * 100);
+      document.getElementById('nextLessonTitle').textContent = next ? next.title : 'Formation terminée !';
+      document.getElementById('nextLessonProgress').style.width = pct + '%';
+    }
+
+    function setFilter(btn) {
+      document.querySelectorAll('.chip').forEach(c => {
+        c.classList.remove('active');
+        c.classList.add('bg-white', 'text-slate-600', 'shadow-sm');
+        c.style.background = '';
+        c.style.color = '';
+        c.style.boxShadow = '';
+      });
+      btn.classList.add('active');
+      btn.classList.remove('bg-white', 'text-slate-600', 'shadow-sm');
+      currentFilter = btn.dataset.filter;
+      renderLessons();
+    }
+
+    function setFilterByLevel(level) {
+      currentFilter = level;
+      document.querySelectorAll('.chip').forEach(c => {
+        c.classList.remove('active');
+        c.classList.add('bg-white', 'text-slate-600', 'shadow-sm');
+        if (c.dataset.filter === level) {
+          c.classList.add('active');
+          c.classList.remove('bg-white', 'text-slate-600', 'shadow-sm');
+        }
+      });
+      renderLessons();
+    }
+
+    function renderLessons() {
+      const list = document.getElementById('lessonsList');
+      const filtered = currentFilter === 'all' ? ALL_LESSONS : ALL_LESSONS.filter(l => l.level === currentFilter);
+      list.innerHTML = filtered.map(l => {
+        const done = !!progress[l.id];
+        return `
+          <div class="card-soft p-3.5 flex items-center gap-3.5 cursor-pointer active:scale-[0.98] transition" onclick="openLesson('${l.id}')">
+            <div class="w-12 h-12 rounded-2xl icon-3d flex items-center justify-center text-xl shrink-0">${l.icon}</div>
+            <div class="flex-1 min-w-0">
+              <div class="font-semibold text-sm text-slate-800 truncate">${l.title}</div>
+              <div class="text-xs text-slate-500 mt-0.5">${l.moduleTitle} · ${l.level}</div>
+            </div>
+            <div class="w-9 h-9 rounded-full flex items-center justify-center shrink-0 ${done ? 'bg-emerald-100 text-emerald-600' : 'icon-3d-orange text-white'}">
+              ${done ? '✓' : '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>'}
+            </div>
+          </div>`;
+      }).join('') || '<p class="text-center text-slate-400 py-10">Aucune leçon dans ce filtre.</p>';
+    }
+
+    function openLesson(id) {
+      const idx = ALL_LESSONS.findIndex(l => l.id === id);
+      if (idx === -1) return;
+      currentLessonIndex = idx;
+      const l = ALL_LESSONS[idx];
+      document.getElementById('lessonTitle').textContent = l.title;
+      document.getElementById('lessonLevel').textContent = l.moduleTitle + ' · ' + l.level;
+      document.getElementById('lessonContent').innerHTML = l.content;
+      const btn = document.getElementById('btnComplete');
+      btn.textContent = progress[l.id] ? 'Déjà terminée ✓' : 'Marquer terminée ✓';
+      btn.disabled = !!progress[l.id];
+      document.getElementById('btnPrevLesson').style.visibility = idx === 0 ? 'hidden' : 'visible';
+      document.getElementById('btnNextLesson').style.visibility = idx === ALL_LESSONS.length - 1 ? 'hidden' : 'visible';
+      showView('lesson');
+    }
+
+    function openNextLesson() {
+      const next = ALL_LESSONS.find(l => !progress[l.id]);
+      if (next) openLesson(next.id);
+      else showView('lecons');
+    }
+
+    function navigateLesson(dir) {
+      const newIdx = currentLessonIndex + dir;
+      if (newIdx >= 0 && newIdx < ALL_LESSONS.length) openLesson(ALL_LESSONS[newIdx].id);
+    }
+
+    function markComplete() {
+      const l = ALL_LESSONS[currentLessonIndex];
+      progress[l.id] = true;
+      localStorage.setItem('ls_progress', JSON.stringify(progress));
+      document.getElementById('btnComplete').textContent = 'Déjà terminée ✓';
+      document.getElementById('btnComplete').disabled = true;
+      renderHome();
+    }
+
+    function renderProgress() {
+      const done = Object.keys(progress).length;
+      const total = ALL_LESSONS.length;
+      const pct = Math.round((done / total) * 100);
+      document.getElementById('progressPercent').textContent = pct + '%';
+      document.getElementById('progressCount').textContent = `${done} / ${total} leçons`;
+      document.getElementById('progressBar').style.width = pct + '%';
+
+      document.getElementById('moduleProgress').innerHTML = MODULES.map(m => {
+        const d = m.lessons.filter(l => progress[l.id]).length;
+        const p = Math.round((d / m.lessons.length) * 100);
+        return `
+          <div class="card-soft p-4">
+            <div class="flex items-center justify-between mb-2">
+              <div class="font-semibold text-sm text-slate-800">${m.icon} ${m.title}</div>
+              <div class="text-xs font-medium text-slate-500">${d}/${m.lessons.length}</div>
+            </div>
+            <div class="h-2 bg-orange-100 rounded-full overflow-hidden">
+              <div class="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full" style="width:${p}%"></div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function renderCert() {
+      const done = Object.keys(progress).length;
+      const pct = Math.round((done / ALL_LESSONS.length) * 100);
+      const quizOk = localStorage.getItem('ls_quiz_passed') === '1';
+      document.getElementById('certRequirement').textContent = `Progression : ${pct}% ${quizOk ? '· Quiz validé ✓' : '· Quiz non validé'}`;
+
+      if (pct >= 80 && quizOk) {
+        document.getElementById('certLocked').classList.add('hidden');
+        document.getElementById('certUnlocked').classList.remove('hidden');
+        document.getElementById('certName').textContent = userName || 'Apprenant';
+        document.getElementById('certDate').textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+      } else {
+        document.getElementById('certLocked').classList.remove('hidden');
+        document.getElementById('certUnlocked').classList.add('hidden');
+      }
+    }
+
+    // Quiz
+    function startQuiz() {
+      quizState = { index: 0, score: 0, answers: [] };
+      document.getElementById('quizStart').classList.add('hidden');
+      document.getElementById('quizResult').classList.add('hidden');
+      document.getElementById('quizArea').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = QUIZ[quizState.index];
+      document.getElementById('quizProgress').textContent = `Question ${quizState.index + 1}/${QUIZ.length}`;
+      document.getElementById('quizScore').textContent = `Score : ${quizState.score}`;
+      document.getElementById('quizQuestion').textContent = q.q;
+      document.getElementById('quizOptions').innerHTML = q.options.map((o, i) => `
+        <button onclick="answerQuiz(${i})" class="w-full text-left px-4 py-3.5 rounded-xl border border-orange-100 bg-white hover:border-orange-300 hover:bg-orange-50 text-sm font-medium transition active:scale-[0.98]">
+          ${o}
+        </button>`).join('');
+      document.getElementById('quizNextBtn').classList.add('hidden');
+    }
+
+    function answerQuiz(idx) {
+      const q = QUIZ[quizState.index];
+      const correct = idx === q.correct;
+      if (correct) quizState.score++;
+      quizState.answers.push(correct);
+
+      const buttons = document.querySelectorAll('#quizOptions button');
+      buttons.forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.correct) {
+          b.classList.add('border-emerald-400', 'bg-emerald-50', 'text-emerald-800');
+        }
+        if (i === idx && !correct) {
+          b.classList.add('border-red-300', 'bg-red-50', 'text-red-700');
+        }
+      });
+
+      if (quizState.index < QUIZ.length - 1) {
+        document.getElementById('quizNextBtn').classList.remove('hidden');
+      } else {
+        setTimeout(finishQuiz, 700);
+      }
+    }
+
+    function nextQuestion() {
+      quizState.index++;
+      showQuestion();
+    }
+
+    function finishQuiz() {
+      document.getElementById('quizArea').classList.add('hidden');
+      document.getElementById('quizResult').classList.remove('hidden');
+      const pct = Math.round((quizState.score / QUIZ.length) * 100);
+      const passed = pct >= 70;
+      if (passed) localStorage.setItem('ls_quiz_passed', '1');
+
+      document.getElementById('quizResultIcon').textContent = passed ? '🎉' : '📚';
+      document.getElementById('quizResultTitle').textContent = passed ? 'Bravo !' : 'Continue tes efforts';
+      document.getElementById('quizResultText').textContent = `Tu as obtenu ${quizState.score}/${QUIZ.length} (${pct}%). ${passed ? 'Quiz validé pour le certificat.' : 'Il te faut au moins 70 % pour valider.'}`;
+    }
+
+    function resetQuiz() {
+      document.getElementById('quizResult').classList.add('hidden');
+      document.getElementById('quizStart').classList.remove('hidden');
+    }
+
+    function saveName(val) {
+      userName = val.trim();
+      localStorage.setItem('ls_name', userName);
+    }
+
+    function resetProgress() {
+      if (confirm('Réinitialiser toute la progression et le quiz ?')) {
+        progress = {};
+        localStorage.removeItem('ls_progress');
+        localStorage.removeItem('ls_quiz_passed');
+        renderHome();
+        alert('Progression réinitialisée.');
+      }
+    }
+
+    function downloadCertificate() {
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 560;
+      const ctx = canvas.getContext('2d');
+
+      // Soft orange gradient bg
+      const grd = ctx.createLinearGradient(0, 0, 800, 560);
+      grd.addColorStop(0, '#fff7ed');
+      grd.addColorStop(1, '#ffedd5');
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, 800, 560);
+
+      ctx.strokeStyle = '#f97316';
+      ctx.lineWidth = 10;
+      ctx.strokeRect(25, 25, 750, 510);
+
+      ctx.fillStyle = '#9a3412';
+      ctx.font = 'bold 26px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText('CERTIFICAT DE RÉUSSITE', 400, 110);
+
+      ctx.fillStyle = '#1e293b';
+      ctx.font = '20px system-ui';
+      ctx.fillText('LibreSoudure – Formation ouverte', 400, 155);
+
+      ctx.font = '16px system-ui';
+      ctx.fillText('est décerné à', 400, 230);
+
+      ctx.fillStyle = '#ea580c';
+      ctx.font = 'bold 38px system-ui';
+      ctx.fillText(userName || 'Apprenant', 400, 290);
+
+      ctx.fillStyle = '#475569';
+      ctx.font = '16px system-ui';
+      ctx.fillText('pour avoir complété la formation en', 400, 350);
+      ctx.fillText('micro-soudure et bases de l’électronique', 400, 375);
+
+      ctx.font = '14px system-ui';
+      ctx.fillText(new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }), 400, 440);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '12px system-ui';
+      ctx.fillText('Généré localement • LibreSoudure', 400, 510);
+
+      const link = document.createElement('a');
+      link.download = 'certificat-libresoudure.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // Init
+    document.getElementById('userName').value = userName;
+    renderHome();
+  </script>
 </body>
 </html>
